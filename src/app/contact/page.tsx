@@ -44,11 +44,11 @@ export default function ContactPage() {
                 </div>
                 <div className="flex items-center space-x-4">
                   <Phone className="w-6 h-6 text-blue-600" />
-                  <span>+1 (123) 456-7890</span>
+                  <span>+91 8306721779</span>
                 </div>
                 <div className="flex items-center space-x-4">
                   <MapPin className="w-6 h-6 text-blue-600" />
-                  <span>123 Disaster Relief Street, Resilient City, RC 12345, United States</span>
+                  <span>IIITDM Jabalpur</span>
                 </div>
               </div>
             </div>
@@ -56,7 +56,7 @@ export default function ContactPage() {
               <h2 className="text-2xl font-semibold mb-4 text-blue-800">Hours of Operation</h2>
               <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
               <p>Saturday - Sunday: Closed</p>
-              <p className="mt-2 font-semibold">24/7 Emergency Hotline: +1 (800) 123-4567</p>
+              <p className="mt-2 font-semibold">24/7 Emergency Hotline: +91 8306721779</p>
             </div>
             <div className="bg-blue-100 p-6 rounded-lg">
               <h2 className="text-xl font-semibold mb-2 text-blue-800">Need Immediate Assistance?</h2>

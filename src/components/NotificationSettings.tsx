@@ -1,54 +1,46 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function UserProfile() {
-  const [isEditing, setIsEditing] = useState(false)
-  const [name, setName] = useState('John Doe')
-  const [email, setEmail] = useState('john.doe@example.com')
-
-  const handleSave = () => {
-    // Here you would typically send an API request to update the user's information
-    setIsEditing(false)
-  }
+export default function NotificationSettings() {
+  const [emailAlerts, setEmailAlerts] = useState(true)
+  const [smsAlerts, setSmsAlerts] = useState(false)
+  const [pushNotifications, setPushNotifications] = useState(true)
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>User Profile</CardTitle>
-        <CardDescription>Manage your personal information</CardDescription>
+        <CardTitle>Notification Settings</CardTitle>
+        <CardDescription>Manage how you receive alerts and updates</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex items-center space-x-4 mb-4">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src="/placeholder.svg?height=80&width=80" alt={name} />
-            <AvatarFallback>{name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h3 className="text-2xl font-bold">{name}</h3>
-            <p className="text-gray-500">{email}</p>
-          </div>
+      <CardContent className="space-y-4">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="email-alerts">Email Alerts</Label>
+          <Switch
+            id="email-alerts"
+            checked={emailAlerts}
+            onCheckedChange={setEmailAlerts}
+          />
         </div>
-        {isEditing ? (
-          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-            <Button type="submit">Save Changes</Button>
-          </form>
-        ) : (
-          <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
-        )}
+        <div className="flex items-center justify-between">
+          <Label htmlFor="sms-alerts">SMS Alerts</Label>
+          <Switch
+            id="sms-alerts"
+            checked={smsAlerts}
+            onCheckedChange={setSmsAlerts}
+          />
+        </div>
+        <div className="flex items-center justify-between">
+          <Label htmlFor="push-notifications">Push Notifications</Label>
+          <Switch
+            id="push-notifications"
+            checked={pushNotifications}
+            onCheckedChange={setPushNotifications}
+          />
+        </div>
       </CardContent>
     </Card>
   )

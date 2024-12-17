@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -8,9 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function UserProfile() {
+  const { data: session } = useSession()
   const [isEditing, setIsEditing] = useState(false)
-  const [name, setName] = useState('John Doe')
-  const [email, setEmail] = useState('john.doe@example.com')
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
+  useEffect(() => {
+    if (session?.user) {
+      setName(session.user.name || '')
+      setEmail(session.user.email || '')
+    }
+  }, [session])
 
   const handleSave = () => {
     // Here you would typically send an API request to update the user's information
@@ -26,7 +35,7 @@ export default function UserProfile() {
       <CardContent>
         <div className="flex items-center space-x-4 mb-4">
           <Avatar className="h-20 w-20">
-            <AvatarImage src="/placeholder.svg?height=80&width=80" alt={name} />
+            <AvatarImage src={session?.user?.image || "/placeholder.svg?height=80&width=80"} alt={name} />
             <AvatarFallback>{name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
           </Avatar>
           <div>
@@ -42,7 +51,7 @@ export default function UserProfile() {
             </div>
             <div>
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} readOnly />
             </div>
             <Button type="submit">Save Changes</Button>
           </form>
