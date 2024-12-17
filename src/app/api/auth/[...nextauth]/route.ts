@@ -10,15 +10,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ profile }) {
-      if (profile?.email) {
-        return !!(profile.email.endsWith("@admin.com") || profile.email.endsWith("@user.com"));
-      }
-      return true;
-    },
     async jwt({ token, user }) {
       if (user) {
-        token.role = user.email?.endsWith("@admin.com") ? "admin" : "user"
+        token.role = "user" // Default role for all users
       }
       return token
     },

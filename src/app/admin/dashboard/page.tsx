@@ -1,20 +1,34 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import NextAuth from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import type { NextAuthOptions } from "next-auth"
 
-export default async function AdminDashboard() {
- const session = await getServerSession(authOptions)
-
- if (!session || (session.user as { role?: string }).role !== 'admin') {
-   redirect('/auth/login')
- }
-
- return (
-   <div className="p-8">
-     <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
-     <p>Welcome, Admin {session.user?.name}!</p>
-     {/* Add more admin dashboard content here */}
-   </div>
- )
+export const authOptions: NextAuthOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+  ],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = "user" // Default role for all users
+      }
+      return token
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        (session.user as { role?: string }).role = token.role as string
+      }
+      return session
+    },
+  },
+  pages: {
+    signIn: '/auth/login',
+  },
 }
+
+const handler = NextAuth(authOptions)
+
+export { handler as GET, handler as POST }
 
