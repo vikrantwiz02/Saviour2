@@ -3,15 +3,14 @@ import Image from 'next/image'
 
 export default function Footer() {
   return (
-    <footer className="bg-blue-800 text-white py-8 font-sans">
+    <footer className="bg-blue-400 text-black py-8 font-sans">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="flex items-center space-x-2">
-            <Image src="/logo.svg" alt="SAVIOUR Logo" width={40} height={40} />
-            <div>
-              <h3 className="text-xl font-bold font-serif">SAVIOUR</h3>
-              <p className="text-sm">Empowering communities through disaster preparedness and response.</p>
-            </div>
+          <div>
+            <Image src="/Saviour.png" alt="SAVIOUR Logo" width={180} height={40} />
+            <p className="text-black-800 text-base">
+              Empowering communities to stay safe during natural disasters.
+            </p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-2">Quick Links</h4>
@@ -55,3 +54,4 @@ export default function Footer() {
     </footer>
   )
 }
+

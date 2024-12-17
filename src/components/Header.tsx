@@ -11,22 +11,21 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <header className="bg-blue-600 text-white font-sans">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/100">
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src="/logo.svg" alt="SAVIOUR Logo" width={40} height={40} />
-            <span className="text-2xl font-bold font-serif">SAVIOUR</span>
+            <Image src="/Saviour.png" alt="SAVIOUR Logo" width={180} height={40} />
           </Link>
           <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/about" className="hover:text-blue-200 transition-colors hover:scale-105 transform">About</Link>
-            <Link href="/services" className="hover:text-blue-200 transition-colors hover:scale-105 transform">Services</Link>
-            <Link href="/contact" className="hover:text-blue-200 transition-colors hover:scale-105 transform">Contact</Link>
+            <Link href="/about" className="hover:text-blue-600 transition-colors hover:scale-105 transform">About</Link>
+            <Link href="/services" className="hover:text-blue-600 transition-colors hover:scale-105 transform">Services</Link>
+            <Link href="/contact" className="hover:text-blue-600 transition-colors hover:scale-105 transform">Contact</Link>
             <Button 
               onClick={() => signIn('google')}
               variant="outline" 
               size="sm"
-              className="text-white border-white hover:bg-white hover:text-blue-600 transition-colors"
+              className="text-black border-white hover:bg-white hover:text-blue-600 transition-colors"
             >
               Sign In / Sign Up
             </Button>
@@ -46,7 +45,7 @@ export default function Header() {
               onClick={() => signIn('google')}
               variant="outline" 
               size="sm"
-              className="text-white border-white hover:bg-white hover:text-blue-600 transition-colors"
+              className="text-black border-white hover:bg-white hover:text-blue-600 transition-colors"
             >
               Sign In / Sign Up
             </Button>
