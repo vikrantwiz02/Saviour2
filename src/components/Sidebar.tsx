@@ -7,7 +7,6 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AlertCircle, Navigation, Database, CloudSun, Users, PhoneCall, UserCircle, Bell, BarChart2, Package, Newspaper, Map, Shield, BookOpen, MessageCircle, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
-import { useSession } from "next-auth/react"
 
 const sidebarItems = [
   { name: 'Dashboard Overview', icon: Activity, href: '/dashboard' },
@@ -30,7 +29,6 @@ const sidebarItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { data: session } = useSession()
   const [isOpen, setIsOpen] = useState(true)
 
   useEffect(() => {
