@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/login',
   },
   events: {
-    async signOut({ session, token }) {
+    async signOut() {
       // Clear any server-side session data here if needed
     },
   },
