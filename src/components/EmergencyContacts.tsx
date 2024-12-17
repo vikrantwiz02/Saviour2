@@ -4,9 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function EmergencyContacts() {
   const contacts = [
-    { name: 'Emergency Services', number: '911' },
-    { name: 'Local Police', number: '555-0100' },
-    { name: 'Fire Department', number: '555-0200' },
+    { name: 'Emergency Services', number: '112' },
+    { name: 'Local Police', number: '100' },
+    { name: 'Fire Department', number: '101' },
+    { name: 'Ambulance', number: '108' },
   ]
 
   return (
