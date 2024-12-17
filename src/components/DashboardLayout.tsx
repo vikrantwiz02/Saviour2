@@ -20,7 +20,9 @@ export default async function DashboardLayout({ children }: DashboardLayoutProps
       <Sidebar />
       <div className="flex-1 p-8 overflow-auto">
         <h1 className="text-3xl font-bold mb-6 text-white">SAVIOUR Dashboard</h1>
-        {children}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          {children}
+        </div>
       </div>
     </div>
   )

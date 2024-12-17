@@ -1,25 +1,34 @@
-import { Cloud, Sun, CloudRain } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Sun, Cloud, CloudRain, Wind } from 'lucide-react'
 
 export function WeatherForecast() {
-  // Placeholder data
   const forecast = [
-    { day: 'Mon', icon: Sun, temp: 28 },
-    { day: 'Tue', icon: Cloud, temp: 24 },
-    { day: 'Wed', icon: CloudRain, temp: 22 },
+    { day: 'Today', temp: 28, icon: Sun, description: 'Sunny' },
+    { day: 'Tomorrow', temp: 24, icon: Cloud, description: 'Partly Cloudy' },
+    { day: 'Wednesday', temp: 22, icon: CloudRain, description: 'Rain' },
+    { day: 'Thursday', temp: 26, icon: Wind, description: 'Windy' },
   ]
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Weather Forecast</h2>
-      <div className="flex justify-between">
-        {forecast.map((day) => (
-          <div key={day.day} className="text-center">
-            <div>{day.day}</div>
-            <day.icon className="h-8 w-8 mx-auto my-2" />
-            <div>{day.temp}°C</div>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold mb-4">Weather Forecast</h2>
+      <Card className="bg-white">
+        <CardHeader>
+          <CardTitle>4-Day Forecast</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {forecast.map((day) => (
+              <div key={day.day} className="text-center">
+                <day.icon className="mx-auto mb-2" />
+                <h3 className="font-semibold">{day.day}</h3>
+                <p className="text-2xl font-bold">{day.temp}°C</p>
+                <p className="text-sm text-gray-500">{day.description}</p>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

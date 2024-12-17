@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { AlertCircle, Navigation, Database, CloudSun, Users, PhoneCall, UserCircle, Bell, BarChart2, Package, Newspaper, Map, Shield, BookOpen, MessageCircle, Activity } from 'lucide-react'
+import { AlertCircle, Navigation, Database, CloudSun, Users, PhoneCall, UserCircle, Bell, BarChart2, Package, Newspaper, Map, Shield, BookOpen, MessageCircle, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const sidebarItems = [
   { name: 'Dashboard Overview', icon: Activity, href: '/dashboard' },
@@ -33,14 +33,16 @@ export function Sidebar() {
 
   return (
     <div className={cn(
-      "pb-12 transition-all duration-300 ease-in-out",
-      isOpen ? "w-64" : "w-16"
+      "pb-12 transition-all duration-300 ease-in-out border-r border-gray-200",
+      isOpen ? "w-64" : "w-20"
     )}>
       <div className="space-y-4 py-4">
-        <div className="px-3 py-2">
-          <Button variant="ghost" className="w-full justify-start" onClick={() => setIsOpen(!isOpen)}>
-            <span className={cn("mr-2", !isOpen && "sr-only")}>☰</span>
-            {isOpen && <span>SAVIOUR Dashboard</span>}
+        <div className="px-3 py-2 flex items-center justify-between">
+          <h2 className={cn("text-lg font-semibold tracking-tight", !isOpen && "hidden")}>
+            SAVIOUR Dashboard
+          </h2>
+          <Button variant="ghost" size="sm" className="w-9 p-0" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
           </Button>
         </div>
         <div className="px-3 py-2">
@@ -53,9 +55,9 @@ export function Sidebar() {
                 <Link key={item.href} href={item.href}>
                   <Button 
                     variant={pathname === item.href ? "secondary" : "ghost"} 
-                    className="w-full justify-start"
+                    className={cn("w-full justify-start", !isOpen && "justify-center")}
                   >
-                    <item.icon className={cn("mr-2 h-4 w-4", !isOpen && "mr-0")} />
+                    <item.icon className={cn("h-5 w-5", isOpen && "mr-2")} />
                     {isOpen && <span>{item.name}</span>}
                   </Button>
                 </Link>
