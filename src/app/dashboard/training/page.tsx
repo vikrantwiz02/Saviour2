@@ -9,15 +9,15 @@ export default function TrainingPage() {
       <div className="space-y-6">
         <h2 className="text-2xl font-bold mb-4">Training & Workshops</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <BookOpen className="mr-2" />
+              <CardTitle className="flex items-center text-lg">
+                <BookOpen className="mr-2 h-5 w-5" />
                 Disaster Preparedness 101
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="mb-2">Learn the basics of preparing for various types of disasters.</p>
+            <CardContent className="flex-grow">
+              <p className="mb-2 text-sm">Learn the basics of preparing for various types of disasters.</p>
               <div className="flex items-center text-sm text-gray-500 mb-4">
                 <Clock className="mr-1" size={16} />
                 <span>2 hours</span>
@@ -25,15 +25,15 @@ export default function TrainingPage() {
               <Button className="w-full">Start Course</Button>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Video className="mr-2" />
+              <CardTitle className="flex items-center text-lg">
+                <Video className="mr-2 h-5 w-5" />
                 Emergency Response Techniques
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="mb-2">Video-based training on crucial emergency response methods.</p>
+            <CardContent className="flex-grow">
+              <p className="mb-2 text-sm">Video-based training on crucial emergency response methods.</p>
               <div className="flex items-center text-sm text-gray-500 mb-4">
                 <Clock className="mr-1" size={16} />
                 <span>3 hours</span>
@@ -41,15 +41,15 @@ export default function TrainingPage() {
               <Button className="w-full">Watch Videos</Button>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="flex flex-col">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <Award className="mr-2" />
+              <CardTitle className="flex items-center text-lg">
+                <Award className="mr-2 h-5 w-5" />
                 Certification Programs
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="mb-2">Get certified in various aspects of disaster management.</p>
+            <CardContent className="flex-grow">
+              <p className="mb-2 text-sm">Get certified in various aspects of disaster management.</p>
               <div className="flex items-center text-sm text-gray-500 mb-4">
                 <Clock className="mr-1" size={16} />
                 <span>Variable duration</span>
@@ -60,20 +60,20 @@ export default function TrainingPage() {
         </div>
         <Card>
           <CardHeader>
-            <CardTitle>Upcoming Live Workshops</CardTitle>
+            <CardTitle className="text-xl">Upcoming Live Workshops</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-2">
-              <li className="flex justify-between items-center">
-                <span>Community First Aid</span>
+              <li className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <span className="text-sm mb-2 sm:mb-0">Community First Aid</span>
                 <Button size="sm">Register</Button>
               </li>
-              <li className="flex justify-between items-center">
-                <span>Fire Safety at Home</span>
+              <li className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <span className="text-sm mb-2 sm:mb-0">Fire Safety at Home</span>
                 <Button size="sm">Register</Button>
               </li>
-              <li className="flex justify-between items-center">
-                <span>Earthquake Preparedness</span>
+              <li className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
+                <span className="text-sm mb-2 sm:mb-0">Earthquake Preparedness</span>
                 <Button size="sm">Register</Button>
               </li>
             </ul>
@@ -83,4 +83,3 @@ export default function TrainingPage() {
     </DashboardLayout>
   )
 }
-
