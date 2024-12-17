@@ -1,16 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { Metadata } from 'next'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-
-export const metadata: Metadata = {
-  title: 'Donate - SAVIOUR',
-  description: 'Support our mission by donating to SAVIOUR',
-}
+export { metadata } from './metadata'
 
 export default function DonatePage() {
   const [oneTimeAmount, setOneTimeAmount] = useState('')
@@ -105,7 +100,7 @@ export default function DonatePage() {
         <div className="mt-12 text-center">
           <h2 className="text-2xl font-semibold mb-4">Other Ways to Support</h2>
           <p className="mb-4">If you prefer to donate by check or have any questions about donating, please contact our donation team:</p>
-          <p className="font-semibold">donations@saviour.org | +91 8955192479</p>
+          <p className="font-semibold">donations@saviour.org | (123) 456-7890</p>
         </div>
       </div>
     </div>
