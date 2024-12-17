@@ -35,7 +35,7 @@ export default function Header() {
            {session && (
              <>
                <Button asChild variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                 <Link href={(session.user as any).role === 'admin' ? "/admin/dashboard" : "/dashboard"}>Dashboard</Link>
+                 <Link href={(session.user as { role?: string })?.role === 'admin' ? "/admin/dashboard" : "/dashboard"}>Dashboard</Link>
                </Button>
                <Button onClick={() => signOut()} variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
                  Sign Out
@@ -67,7 +67,7 @@ export default function Header() {
            {session && (
              <>
                <Button asChild variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
-                 <Link href={(session.user as any).role === 'admin' ? "/admin/dashboard" : "/dashboard"}>Dashboard</Link>
+                 <Link href={(session.user as { role?: string })?.role === 'admin' ? "/admin/dashboard" : "/dashboard"}>Dashboard</Link>
                </Button>
                <Button onClick={() => signOut()} variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
                  Sign Out
@@ -80,4 +80,3 @@ export default function Header() {
    </header>
  )
 }
-
