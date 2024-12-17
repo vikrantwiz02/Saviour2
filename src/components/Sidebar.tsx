@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { AlertCircle, Navigation, Database, CloudSun, Users, PhoneCall, UserCircle, Bell, BarChart2, Package, Newspaper, Map, Shield, BookOpen, MessageCircle, Activity, ChevronLeft, ChevronRight } from 'lucide-react'
+import { useSession } from "next-auth/react"
 
 const sidebarItems = [
   { name: 'Dashboard Overview', icon: Activity, href: '/dashboard' },
@@ -29,11 +30,28 @@ const sidebarItems = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  const { data: session } = useSession()
   const [isOpen, setIsOpen] = useState(true)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) {
+        setIsOpen(false)
+      } else {
+        setIsOpen(true)
+      }
+    }
+
+    // Set initial state
+    handleResize()
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className={cn(
-      "pb-12 transition-all duration-300 ease-in-out border-r border-gray-200",
+      "pb-12 transition-all duration-300 ease-in-out border-r-4 border-gray-300",
       isOpen ? "w-64" : "w-20"
     )}>
       <div className="space-y-4 py-4">

@@ -50,15 +50,23 @@ export default function ForumPage() {
               <ul className="space-y-2">
                 <li className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-blue-500 mr-2"></div>
-                  <span>John Doe</span>
+                  <span>Ravi</span>
                 </li>
                 <li className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-green-500 mr-2"></div>
-                  <span>Jane Smith</span>
+                  <span>Harsh</span>
                 </li>
                 <li className="flex items-center">
                   <div className="w-8 h-8 rounded-full bg-purple-500 mr-2"></div>
-                  <span>Alex Johnson</span>
+                  <span>Anchal</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="w-8 h-8 rounded-full bg-yellow-500 mr-2"></div>
+                  <span>Himshri</span>
+                </li>
+                <li className="flex items-center">
+                  <div className="w-8 h-8 rounded-full bg-red-500 mr-2"></div>
+                  <span>Vikrant</span>
                 </li>
               </ul>
             </CardContent>

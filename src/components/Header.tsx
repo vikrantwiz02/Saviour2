@@ -29,6 +29,7 @@ export default function Header() {
             <Link href="/about" className="hover:text-blue-600 transition-colors hover:scale-105 transform">About</Link>
             <Link href="/services" className="hover:text-blue-600 transition-colors hover:scale-105 transform">Services</Link>
             <Link href="/contact" className="hover:text-blue-600 transition-colors hover:scale-105 transform">Contact</Link>
+            <Link href="/donate" className="hover:text-blue-600 transition-colors hover:scale-105 transform">Donate</Link>
             {!session && (
               <>
                 <Button asChild variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
@@ -61,6 +62,7 @@ export default function Header() {
             <Link href="/about" className="hover:text-blue-600 transition-colors">About</Link>
             <Link href="/services" className="hover:text-blue-600 transition-colors">Services</Link>
             <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+            <Link href="/donate" className="hover:text-blue-600 transition-colors">Donate</Link>
             {!session && (
               <>
                 <Button asChild variant="outline" size="sm" className="text-blue-600 border-blue-600 hover:bg-blue-600 hover:text-white transition-colors">
@@ -87,3 +89,4 @@ export default function Header() {
     </header>
   )
 }
+
