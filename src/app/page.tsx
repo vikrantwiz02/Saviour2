@@ -7,7 +7,7 @@ import { LoadingSpinner } from '@/components/ui/LoadingSpinner'
 
 export default function Home() {
   return (
-    <>
+    <main>
       <HeroSection />
       <Suspense fallback={<LoadingSpinner />}>
         <FeatureSection />
@@ -18,6 +18,7 @@ export default function Home() {
       <Suspense fallback={<LoadingSpinner />}>
         <ContactSection />
       </Suspense>
-    </>
+    </main>
   )
 }
+

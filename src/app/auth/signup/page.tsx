@@ -18,7 +18,6 @@ export default function SignupPage() {
     setIsLoading(true)
     
     const formData = new FormData(event.currentTarget)
-    const name = formData.get('name') as string
     const email = formData.get('email') as string
     const password = formData.get('password') as string
 
@@ -56,10 +55,6 @@ export default function SignupPage() {
         </CardHeader>
         <CardContent className="mt-6">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" name="name" placeholder="Your Name" required />
-            </div>
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" name="email" type="email" placeholder="youremail@gmail.com" required />

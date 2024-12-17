@@ -10,9 +10,9 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ account, profile }) {
-      if (account?.provider === "google") {
-        return !!(profile?.email?.endsWith("@admin.com") || profile?.email?.endsWith("@user.com"));
+    async signIn({ profile }) {
+      if (profile?.email) {
+        return !!(profile.email.endsWith("@admin.com") || profile.email.endsWith("@user.com"));
       }
       return true;
     },
@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role
+        (session.user as { role?: string }).role = token.role as string
       }
       return session
     },

@@ -11,7 +11,7 @@ export default function DonationSection() {
           <Button size="lg" variant="secondary">Donate $25</Button>
           <Button size="lg" variant="secondary">Donate $50</Button>
           <Button size="lg" variant="secondary">Donate $100</Button>
-          <Button size="lg" variant="outline">Custom Amount</Button>
+          <Button size="lg" variant="secondary">Custom Amount</Button>
         </div>
       </div>
     </section>
