@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 
@@ -68,7 +69,7 @@ export default function About() {
         <div className="mt-20">
           <h3 className="text-2xl font-extrabold text-gray-900 text-center">Our Team</h3>
           <p className="mt-4 max-w-3xl mx-auto text-center text-lg text-gray-500">
-            Saviour is built by a dedicated team of technologists, disaster management experts, and community organizers. We're passionate about using our skills to make a positive impact on the world.
+            Saviour is built by a dedicated team of technologists, disaster management experts, and community organizers. We&apos;re passionate about using our skills to make a positive impact on the world.
           </p>
         </div>
         <div className="mt-20 text-center">
