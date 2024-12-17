@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth/next"
 import { redirect } from 'next/navigation'
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"
+import { authOptions } from "@/lib/auth"
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions)
@@ -17,3 +17,4 @@ export default async function AdminDashboard() {
     </div>
   )
 }
+
