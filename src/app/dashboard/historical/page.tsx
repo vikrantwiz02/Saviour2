@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/DashboardLayout"
-import HistoricalData from "@/components/HIstoricalData"
+import HistoricalData from "@/components/HistoricalData"
 
 export default function HistoricalPage() {
   return (

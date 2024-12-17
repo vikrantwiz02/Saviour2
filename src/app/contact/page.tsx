@@ -14,7 +14,7 @@ export default function ContactPage() {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/contact-texture.svg')] opacity-10"></div>
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <h1 className="text-5xl font-bold mb-12 text-center text-blue-800">Contact Us</h1>
+        <h1 className="text-5xl font-bold mb-12 text-ce\nter text-blue-800">Contact Us</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="bg-white p-8 rounded-lg shadow-lg animate-fade-in-left">
             <h2 className="text-2xl font-semibold mb-6 text-blue-800">Get in Touch</h2>
