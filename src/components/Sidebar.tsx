@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, X } from 'lucide-react'
+import { Menu } from 'lucide-react'
 import { sidebarItems } from '@/lib/sidebarItems'
 
 export function Sidebar() {
@@ -69,3 +69,4 @@ export function Sidebar() {
     </div>
   )
 }
+
