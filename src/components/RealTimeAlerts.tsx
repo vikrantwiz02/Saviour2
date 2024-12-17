@@ -1,60 +1,24 @@
-'use client'
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Bell } from 'lucide-react'
 
-import { useState, useEffect } from 'react'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-
-type Resource = {
-  id: string
-  name: string
-  type: string
-  quantity: number
-  location: string
-}
-
-export function ResourceAvailability() {
-  const [resources, setResources] = useState<Resource[]>([])
-
-  useEffect(() => {
-    // Fetch resources
-    // This is a placeholder and should be replaced with actual API call
-    const fetchResources = async () => {
-      const response = await fetch('/api/resources')
-      const data = await response.json()
-      setResources(data)
-    }
-    fetchResources()
-  }, [])
+export function RealTimeAlerts() {
+  // Placeholder data - in a real app, this would come from an API
+  const alerts = [
+    { id: 1, type: 'warning', title: 'Flood Warning', description: 'Potential flooding in low-lying areas.' },
+    { id: 2, type: 'error', title: 'Severe Thunderstorm', description: 'Take shelter immediately.' },
+  ]
 
   return (
-    <Table>
-      <TableCaption>Available Resources</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Type</TableHead>
-          <TableHead>Quantity</TableHead>
-          <TableHead>Location</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {resources.map((resource) => (
-          <TableRow key={resource.id}>
-            <TableCell>{resource.name}</TableCell>
-            <TableCell>{resource.type}</TableCell>
-            <TableCell>{resource.quantity}</TableCell>
-            <TableCell>{resource.location}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+    <div>
+      <h2 className="text-xl font-semibold mb-4">Real-Time Alerts</h2>
+      {alerts.map((alert) => (
+        <Alert key={alert.id} variant={alert.type as 'default' | 'destructive'}>
+          <Bell className="h-4 w-4" />
+          <AlertTitle>{alert.title}</AlertTitle>
+          <AlertDescription>{alert.description}</AlertDescription>
+        </Alert>
+      ))}
+    </div>
   )
 }
 
