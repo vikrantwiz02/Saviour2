@@ -24,7 +24,7 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-2">Connect With Us</h4>
             <p className="text-sm">Email: info@saviour.org</p>
-            <p className="text-sm">Phone: +1 (123) 456-7890</p>
+            <p className="text-sm">Phone: +91 8306721779</p>
             <div className="flex space-x-4 mt-4">
               <a href="#" className="text-white hover:text-blue-300 transition-colors">
                 <span className="sr-only">Facebook</span>

@@ -61,8 +61,8 @@ export default function ContactPage() {
             <div className="bg-blue-100 p-6 rounded-lg">
               <h2 className="text-xl font-semibold mb-2 text-blue-800">Need Immediate Assistance?</h2>
               <p className="mb-4">Our emergency response team is available 24/7 for urgent situations.</p>
-              <Button className="bg-red-600 hover:bg-red-700 text-white">
-                Call Emergency Hotline
+              <Button asChild className="bg-red-600 hover:bg-red-700 text-white">
+                <a href="tel:+918306721779">Call Emergency Hotline</a>
               </Button>
             </div>
           </div>
