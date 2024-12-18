@@ -16,9 +16,8 @@ export default async function Layout({
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-background">
-        {children}
-      </div>
+      {children}
     </DashboardLayout>
   )
 }
+
