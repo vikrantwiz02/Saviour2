@@ -33,15 +33,6 @@ export function MobileHeader() {
         </Sheet>
         <h1 className="text-xl font-semibold flex-grow text-center">SAVIOUR Dashboard</h1>
       </div>
-      <nav className="px-4 py-2">
-        <Link href="/about" onClick={() => handleLinkClick('/about')} className="block py-2">
-          About
-        </Link>
-        <Link href="/services" onClick={() => handleLinkClick('/services')} className="block py-2">
-          Services
-        </Link>
-        {/* Add more navigation links as needed */}
-      </nav>
     </div>
   )
 }
