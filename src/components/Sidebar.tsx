@@ -8,13 +8,12 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { sidebarItems } from '@/lib/sidebarItems'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
-import { FC } from 'react';
 
 interface SidebarProps {
   onLinkClick?: (href: string) => void
 }
 
-export function Sidebar({ onLinkClick }: SidebarProps) {
+export const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
