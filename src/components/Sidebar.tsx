@@ -1,13 +1,12 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback } from 'react'
+import { createContext, useContext } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { sidebarItems } from '@/lib/sidebarItems'
-import { ChevronRight, ChevronLeft } from 'lucide-react'
 
 interface SidebarContextType {
   isCollapsed: boolean;
@@ -31,11 +30,6 @@ interface SidebarProps {
 
 export function Sidebar({ onLinkClick, isMobile = false }: SidebarProps) {
   const pathname = usePathname()
-  //const [isCollapsed, setIsCollapsed] = useState(false)
-
-  //const toggleSidebar = useCallback(() => {
-  //  setIsCollapsed(prev => !prev)
-  //}, [])
 
   const handleLinkClick = (href: string) => {
     if (onLinkClick) {

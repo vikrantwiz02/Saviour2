@@ -5,13 +5,12 @@ import { Menu } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Sidebar } from "@/components/Sidebar"
-import { useRouter, usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export function MobileHeader() {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
-  const pathname = usePathname()
 
   const handleLinkClick = (href: string) => {
     setIsOpen(false)
