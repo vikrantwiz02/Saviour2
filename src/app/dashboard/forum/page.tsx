@@ -1,4 +1,6 @@
-import DashboardLayout from "@/components/DashboardLayout"
+import { getServerSession } from "next-auth/next"
+import { redirect } from 'next/navigation'
+import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MessageSquare, Users, TrendingUp, PlusCircle, Eye, ThumbsUp } from 'lucide-react'
@@ -6,15 +8,20 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 
-export default function ForumPage() {
-const recentThreads = [
-  { title: "Emergency Kit Essentials", author: "John Doe", replies: 23, views: 156, likes: 45 },
-  { title: "Evacuation Plan Tips", author: "Jane Smith", replies: 17, views: 98, likes: 32 },
-  { title: "Post-Disaster Recovery", author: "Alex Johnson", replies: 31, views: 203, likes: 67 },
-]
+export default async function ForumPage() {
+  const session = await getServerSession(authOptions)
 
-return (
-  <DashboardLayout>
+  if (!session) {
+    redirect('/auth/login')
+  }
+
+  const recentThreads = [
+    { title: "Emergency Kit Essentials", author: "Vikrant Kumar", replies: 23, views: 156, likes: 45 },
+    { title: "Evacuation Plan Tips", author: "Gunti Ravi Kumar", replies: 17, views: 98, likes: 32 },
+    { title: "Post-Disaster Recovery", author: "Harsh Kumar Palas", replies: 31, views: 203, likes: 67 },
+  ]
+
+  return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
         <h2 className="text-2xl font-bold">Community Forum</h2>
@@ -74,7 +81,7 @@ return (
               <li className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2">
                   <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Harsh Kumar Palas" />
-                  <AvatarFallback>HK</AvatarFallback>
+                  <AvatarFallback>HP</AvatarFallback>
                 </Avatar>
                 <span className="text-sm">Harsh Kumar Palas</span>
               </li>
@@ -145,7 +152,6 @@ return (
         </CardContent>
       </Card>
     </div>
-  </DashboardLayout>
-)
+  )
 }
 

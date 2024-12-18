@@ -1,78 +1,76 @@
-import DashboardLayout from "@/components/DashboardLayout"
+import { getServerSession } from "next-auth/next"
+import { redirect } from 'next/navigation'
+import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { NotificationSettings } from "@/components/NotificationSettings"
+import { Users, HandHelping, MessageSquare, TrendingUp } from 'lucide-react'
+import { CommunityForm } from "@/components/CommunityForm"
 import { Button } from "@/components/ui/button"
-import { Bell, AlertTriangle, Settings } from 'lucide-react'
-import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 
-export default function NotificationsPage() {
- return (
-   <DashboardLayout>
-     <div className="space-y-6">
-       <h2 className="text-2xl font-bold mb-4">Notification Settings</h2>
-       <Card>
-         <CardHeader>
-           <CardTitle className="text-lg">Notification Preferences</CardTitle>
-         </CardHeader>
-         <CardContent>
-           <NotificationSettings />
-         </CardContent>
-       </Card>
-       <Card>
-         <CardHeader>
-           <CardTitle className="text-lg">Alert Types</CardTitle>
-         </CardHeader>
-         <CardContent>
-           <div className="space-y-4">
-             <div className="flex items-center justify-between">
-               <div className="flex items-center space-x-2">
-                 <AlertTriangle className="h-5 w-5 text-red-500" />
-                 <Label htmlFor="critical-alerts">Critical Alerts</Label>
-               </div>
-               <Switch id="critical-alerts" defaultChecked />
-             </div>
-             <div className="flex items-center justify-between">
-               <div className="flex items-center space-x-2">
-                 <Bell className="h-5 w-5 text-yellow-500" />
-                 <Label htmlFor="weather-alerts">Weather Alerts</Label>
-               </div>
-               <Switch id="weather-alerts" defaultChecked />
-             </div>
-             <div className="flex items-center justify-between">
-               <div className="flex items-center space-x-2">
-                 <Settings className="h-5 w-5 text-blue-500" />
-                 <Label htmlFor="system-updates">System Updates</Label>
-               </div>
-               <Switch id="system-updates" />
-             </div>
-           </div>
-         </CardContent>
-       </Card>
-       <Card>
-         <CardHeader>
-           <CardTitle className="text-lg">Notification History</CardTitle>
-         </CardHeader>
-         <CardContent>
-           <ul className="space-y-2">
-             <li className="flex items-center justify-between text-sm">
-               <span>Severe Weather Alert</span>
-               <span className="text-gray-500">2 hours ago</span>
-             </li>
-             <li className="flex items-center justify-between text-sm">
-               <span>Evacuation Route Update</span>
-               <span className="text-gray-500">1 day ago</span>
-             </li>
-             <li className="flex items-center justify-between text-sm">
-               <span>Community Event Reminder</span>
-               <span className="text-gray-500">3 days ago</span>
-             </li>
-           </ul>
-           <Button className="w-full mt-4">View All Notifications</Button>
-         </CardContent>
-       </Card>
-     </div>
-   </DashboardLayout>
- )
+export default async function CommunityPage() {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    redirect('/auth/login')
+  }
+
+  const stats = [
+    { name: 'Active Volunteers', icon: Users, value: 127, change: 12 },
+    { name: 'Open Requests', icon: HandHelping, value: 15, change: -3 },
+    { name: 'Community Messages', icon: MessageSquare, value: 89, change: 24 },
+  ]
+
+  return (
+    <div className="space-y-6">
+      <h2 className="text-2xl font-bold mb-4">Community Support</h2>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {stats.map((stat) => (
+          <Card key={stat.name} className="flex flex-col">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-sm font-medium">
+                {stat.name}
+              </CardTitle>
+              <stat.icon className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stat.value}</div>
+              <p className="text-xs text-muted-foreground flex items-center mt-1">
+                <TrendingUp className={`h-3 w-3 mr-1 ${stat.change > 0 ? 'text-green-500' : 'text-red-500 transform rotate-180'}`} />
+                {Math.abs(stat.change)} since last week
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Offer or Request Support</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CommunityForm />
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Recent Community Activities</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-4">
+            <li className="flex justify-between items-center">
+              <span className="text-sm">Food distribution event organized</span>
+              <Button size="sm">View Details</Button>
+            </li>
+            <li className="flex justify-between items-center">
+              <span className="text-sm">Volunteer training session scheduled</span>
+              <Button size="sm">View Details</Button>
+            </li>
+            <li className="flex justify-between items-center">
+              <span className="text-sm">Community cleanup initiative started</span>
+              <Button size="sm">View Details</Button>
+            </li>
+          </ul>
+        </CardContent>
+      </Card>
+    </div>
+  )
 }
 
