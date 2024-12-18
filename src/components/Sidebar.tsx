@@ -10,10 +10,11 @@ import { sidebarItems } from '@/lib/sidebarItems'
 import { ChevronRight, ChevronLeft } from 'lucide-react'
 
 interface SidebarProps {
-  onLinkClick?: (href: string) => void
+  onLinkClick?: (href: string) => void;
+  isMobile?: boolean;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onLinkClick, isMobile = false }) => {
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
 
@@ -26,7 +27,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ onLinkClick }) => {
   return (
     <div className={cn(
       "flex flex-col bg-white border-r transition-all duration-300",
-      isCollapsed ? "w-16" : "w-64"
+      isCollapsed ? "w-16" : "w-64",
+      isMobile && pathname !== '/dashboard' ? "hidden" : ""
     )}>
       <div className="flex items-center justify-between p-4">
         {!isCollapsed && <h2 className="text-2xl font-bold">SAVIOUR</h2>}
