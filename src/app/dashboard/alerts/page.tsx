@@ -1,20 +1,25 @@
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Bell, AlertTriangle, Info } from 'lucide-react'
+import { Bell, AlertTriangle, Info, MapPin } from 'lucide-react'
+import { Button } from "@/components/ui/button"
 
 export default function AlertsPage() {
   const alerts = [
-    { id: 1, type: 'warning', title: 'Severe Thunderstorm', message: 'Expected in your area within the next 2 hours.' },
-    { id: 2, type: 'info', title: 'Road Closure', message: 'Main Street closed due to flooding. Use alternate routes.' },
-    { id: 3, type: 'danger', title: 'Evacuation Order', message: 'Immediate evacuation required for Coastal Zone A.' },
+    { id: 1, type: 'warning', title: 'Severe Thunderstorm', message: 'Expected in your area within the next 2 hours.', location: 'City Center' },
+    { id: 2, type: 'info', title: 'Road Closure', message: 'Main Street closed due to flooding. Use alternate routes.', location: 'Downtown' },
+    { id: 3, type: 'danger', title: 'Evacuation Order', message: 'Immediate evacuation required for Coastal Zone A.', location: 'Coastal Area' },
+    { id: 4, type: 'warning', title: 'High Wind Advisory', message: 'Strong winds expected. Secure loose outdoor items.', location: 'Citywide' },
   ]
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h2 className="text-2xl font-bold mb-4">Real-Time Alerts</h2>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">Real-Time Alerts</h2>
+          <Button>Create New Alert</Button>
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
           {alerts.map((alert) => (
             <Card key={alert.id} className="flex flex-col">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -31,11 +36,25 @@ export default function AlertsPage() {
                 </Badge>
               </CardHeader>
               <CardContent>
-                <p className="text-sm">{alert.message}</p>
+                <p className="text-sm mb-2">{alert.message}</p>
+                <div className="flex items-center text-sm text-gray-500">
+                  <MapPin className="mr-1 h-4 w-4" />
+                  {alert.location}
+                </div>
               </CardContent>
             </Card>
           ))}
         </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Alert History</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px] bg-gray-100 rounded-md flex items-center justify-center">
+              Alert History Timeline Placeholder
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   )

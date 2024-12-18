@@ -1,7 +1,9 @@
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Phone, Ambulance, Truck, Shield } from 'lucide-react'
+import { Phone, Ambulance, Truck, Shield, Plus } from 'lucide-react'
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const emergencyContacts = [
   { name: 'Emergency Services', number: '911', icon: Phone },
@@ -15,7 +17,7 @@ export default function EmergencyPage() {
     <DashboardLayout>
       <div className="space-y-6">
         <h2 className="text-2xl font-bold mb-4">Emergency Contacts</h2>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {emergencyContacts.map((contact) => (
             <Card key={contact.name} className="flex flex-col">
               <CardHeader>
@@ -26,7 +28,7 @@ export default function EmergencyPage() {
               </CardHeader>
               <CardContent className="flex-grow flex flex-col justify-between">
                 <p className="text-2xl font-bold mb-4">{contact.number}</p>
-                <Button className="w-full sm:w-auto">Call Now</Button>
+                <Button className="w-full">Call Now</Button>
               </CardContent>
             </Card>
           ))}
@@ -36,7 +38,7 @@ export default function EmergencyPage() {
             <CardTitle className="text-lg">Personal Emergency Contacts</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2">
+            <ul className="space-y-4 mb-4">
               <li className="flex justify-between items-center">
                 <span className="text-sm">John Doe (Family)</span>
                 <Button variant="outline" size="sm">Call</Button>
@@ -50,7 +52,25 @@ export default function EmergencyPage() {
                 <Button variant="outline" size="sm">Call</Button>
               </li>
             </ul>
-            <Button className="w-full mt-4">Add New Contact</Button>
+            <form className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" placeholder="Contact Name" />
+                </div>
+                <div>
+                  <Label htmlFor="relation">Relation</Label>
+                  <Input id="relation" placeholder="Relation" />
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="phone">Phone Number</Label>
+                <Input id="phone" placeholder="Phone Number" type="tel" />
+              </div>
+              <Button className="w-full">
+                <Plus className="mr-2 h-4 w-4" /> Add New Contact
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </div>

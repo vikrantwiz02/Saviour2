@@ -1,16 +1,24 @@
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MessageSquare, Users, TrendingUp, PlusCircle } from 'lucide-react'
+import { MessageSquare, Users, TrendingUp, PlusCircle, Eye, ThumbsUp } from 'lucide-react'
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function ForumPage() {
+  const recentThreads = [
+    { title: "Emergency Kit Essentials", author: "John Doe", replies: 23, views: 156, likes: 45 },
+    { title: "Evacuation Plan Tips", author: "Jane Smith", replies: 17, views: 98, likes: 32 },
+    { title: "Post-Disaster Recovery", author: "Alex Johnson", replies: 31, views: 203, likes: 67 },
+  ]
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
           <h2 className="text-2xl font-bold">Community Forum</h2>
           <Button>
-            <PlusCircle className="mr-2" size={16} />
+            <PlusCircle className="mr-2 h-4 w-4" />
             New Thread
           </Button>
         </div>
@@ -23,19 +31,19 @@ export default function ForumPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
-              <ul className="space-y-2">
-                <li className="flex justify-between items-center">
-                  <span className="text-sm">Emergency Kit Essentials</span>
-                  <Button variant="ghost" size="sm">View</Button>
-                </li>
-                <li className="flex justify-between items-center">
-                  <span className="text-sm">Evacuation Plan Tips</span>
-                  <Button variant="ghost" size="sm">View</Button>
-                </li>
-                <li className="flex justify-between items-center">
-                  <span className="text-sm">Post-Disaster Recovery</span>
-                  <Button variant="ghost" size="sm">View</Button>
-                </li>
+              <ul className="space-y-4">
+                {recentThreads.map((thread, index) => (
+                  <li key={index} className="flex flex-col space-y-2">
+                    <div className="flex justify-between items-start">
+                      <span className="text-sm font-medium">{thread.title}</span>
+                      <Badge variant="secondary" className="ml-2">{thread.replies} replies</Badge>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Eye className="mr-1 h-3 w-3" /> {thread.views}
+                      <ThumbsUp className="ml-2 mr-1 h-3 w-3" /> {thread.likes}
+                    </div>
+                  </li>
+                ))}
               </ul>
             </CardContent>
           </Card>
@@ -47,17 +55,26 @@ export default function ForumPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="flex-grow">
-              <ul className="space-y-2">
+              <ul className="space-y-4">
                 <li className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-blue-500 mr-2"></div>
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                    <AvatarFallback>JD</AvatarFallback>
+                  </Avatar>
                   <span className="text-sm">John Doe</span>
                 </li>
                 <li className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-green-500 mr-2"></div>
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                    <AvatarFallback>JS</AvatarFallback>
+                  </Avatar>
                   <span className="text-sm">Jane Smith</span>
                 </li>
                 <li className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-purple-500 mr-2"></div>
+                  <Avatar className="h-8 w-8 mr-2">
+                    <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                    <AvatarFallback>AJ</AvatarFallback>
+                  </Avatar>
                   <span className="text-sm">Alex Johnson</span>
                 </li>
               </ul>
@@ -73,13 +90,16 @@ export default function ForumPage() {
             <CardContent className="flex-grow">
               <ul className="space-y-2">
                 <li className="flex items-center">
-                  <span className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-1 mr-2">#PreparednessTips</span>
+                  <Badge variant="secondary" className="mr-2">#PreparednessTips</Badge>
+                  <span className="text-xs text-muted-foreground">1.2k posts</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-xs bg-green-100 text-green-800 rounded-full px-2 py-1 mr-2">#CommunityResilience</span>
+                  <Badge variant="secondary" className="mr-2">#CommunityResilience</Badge>
+                  <span className="text-xs text-muted-foreground">876 posts</span>
                 </li>
                 <li className="flex items-center">
-                  <span className="text-xs bg-purple-100 text-purple-800 rounded-full px-2 py-1 mr-2">#DisasterTech</span>
+                  <Badge variant="secondary" className="mr-2">#DisasterTech</Badge>
+                  <span className="text-xs text-muted-foreground">543 posts</span>
                 </li>
               </ul>
             </CardContent>
@@ -87,7 +107,7 @@ export default function ForumPage() {
         </div>
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">Forum Guidelines</CardTitle>
+            <CardTitle className="text-lg">Forum Guidelines</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="list-disc pl-5 space-y-2 text-sm">
@@ -102,3 +122,4 @@ export default function ForumPage() {
     </DashboardLayout>
   )
 }
+

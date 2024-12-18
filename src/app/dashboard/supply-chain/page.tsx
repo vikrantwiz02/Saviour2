@@ -1,97 +1,99 @@
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Progress } from "@/components/ui/progress"
+import { Package, Truck, Clock, TrendingUp, TrendingDown } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
-import { Map, AlertTriangle, Info } from 'lucide-react'
 
-export default function RiskMapPage() {
-  const highRiskAreas = [
-    { name: 'Coastal Region A', risk: 'High' },
-    { name: 'Mountain Valley B', risk: 'Moderate' },
-    { name: 'Urban Center C', risk: 'Low' },
+export default function SupplyChainPage() {
+  const supplies = [
+    { name: 'Food Supplies', stock: 75, nextDelivery: '2 days', trend: 'up' },
+    { name: 'Medical Supplies', stock: 60, nextDelivery: '1 day', trend: 'down' },
+    { name: 'Water', stock: 90, nextDelivery: '5 days', trend: 'stable' },
   ]
 
-  const currentAlerts = [
-    { type: 'Flood Warning', location: 'Region A' },
-    { type: 'Fire Risk', location: 'Region B' },
+  const shipments = [
+    { id: '12345', status: 'In Transit', eta: '6 hours' },
+    { id: '67890', status: 'Scheduled', eta: '2 days' },
+    { id: '54321', status: 'Delayed', eta: 'Unknown' },
   ]
 
   return (
     <DashboardLayout>
-      <div className="space-y-6 p-4 sm:p-6 md:p-8">
-        <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4">Interactive Risk Map</h2>
-        <Card className="mb-6">
+      <div className="space-y-6">
+        <h2 className="text-2xl font-bold mb-4">Supply Chain Tracking</h2>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {supplies.map((supply, index) => (
+            <Card key={index}>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center justify-between">
+                  <span className="flex items-center">
+                    <Package className="mr-2 h-5 w-5" />
+                    {supply.name}
+                  </span>
+                  {supply.trend === 'up' && <TrendingUp className="h-4 w-4 text-green-500" />}
+                  {supply.trend === 'down' && <TrendingDown className="h-4 w-4 text-red-500" />}
+                  {supply.trend === 'stable' && <TrendingUp className="h-4 w-4 text-yellow-500 transform rotate-90" />}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  <p className="text-sm text-gray-500">Current stock:</p>
+                  <div className="flex items-center">
+                    <Progress value={supply.stock} className="flex-grow mr-2" />
+                    <span className="text-sm font-medium">{supply.stock}%</span>
+                  </div>
+                  <p className="text-sm text-gray-500 flex items-center">
+                    <Clock className="mr-1 h-4 w-4" />
+                    Next delivery: {supply.nextDelivery}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        <Card>
           <CardHeader>
-            <CardTitle className="text-base sm:text-lg md:text-xl flex items-center">
-              <Map className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-              Risk Map
+            <CardTitle className="text-lg flex items-center">
+              <Truck className="mr-2 h-5 w-5" />
+              Active Shipments
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gray-200 h-64 sm:h-96 rounded-lg flex items-center justify-center mb-4">
-              <p className="text-xs sm:text-sm text-gray-600">Interactive Risk Map Placeholder</p>
-            </div>
-            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-              <Button className="text-sm sm:text-base">Toggle Layers</Button>
-              <Button variant="outline" className="text-sm sm:text-base">Full Screen</Button>
+            <div className="space-y-4">
+              {shipments.map((shipment) => (
+                <div key={shipment.id} className="flex justify-between items-center">
+                  <span className="text-sm font-medium">Shipment #{shipment.id}</span>
+                  <div className="flex items-center space-x-2">
+                    <Badge variant={
+                      shipment.status === 'In Transit' ? 'default' :
+                      shipment.status === 'Scheduled' ? 'secondary' : 'destructive'
+                    }>
+                      {shipment.status}
+                    </Badge>
+                    <span className="text-sm text-gray-500">ETA: {shipment.eta}</span>
+                  </div>
+                </div>
+              ))}
+              <Button className="w-full">View All Shipments</Button>
             </div>
           </CardContent>
         </Card>
-        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base sm:text-lg md:text-xl">High Risk Areas</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {highRiskAreas.map((area, index) => (
-                  <li key={index} className="flex justify-between items-center text-xs sm:text-sm">
-                    <span>{area.name}</span>
-                    <Badge variant={area.risk === 'High' ? 'destructive' : area.risk === 'Moderate' ? 'default' : 'secondary'}>
-                      {area.risk}
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base sm:text-lg md:text-xl">Current Alerts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                {currentAlerts.map((alert, index) => (
-                  <li key={index} className="flex items-center text-xs sm:text-sm">
-                    <AlertTriangle className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-yellow-500" />
-                    <span>{alert.type}: {alert.location}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base sm:text-lg md:text-xl">Safety Tips</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2">
-                <li className="flex items-center text-xs sm:text-sm">
-                  <Info className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
-                  <span>Stay informed about local warnings</span>
-                </li>
-                <li className="flex items-center text-xs sm:text-sm">
-                  <Info className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
-                  <span>Prepare an emergency kit</span>
-                </li>
-                <li className="flex items-center text-xs sm:text-sm">
-                  <Info className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-blue-500" />
-                  <span>Know your evacuation routes</span>
-                </li>
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Supply Chain Map</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center mb-4">
+              <Package className="h-8 w-8 text-gray-400" />
+              <span className="ml-2 text-gray-600">Supply Chain Map Placeholder</span>
+            </div>
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+              <Button className="flex-1">View Detailed Analytics</Button>
+              <Button variant="outline" className="flex-1">Export Report</Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </DashboardLayout>
   )
