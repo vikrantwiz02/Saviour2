@@ -17,7 +17,7 @@ export function MobileHeader() {
   }
 
   return (
-    <div className="bg-white shadow-sm lg:hidden">
+    <div className="bg-white shadow-sm">
       <div className="container mx-auto px-4 py-3 flex items-center">
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
