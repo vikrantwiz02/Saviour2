@@ -1,3 +1,5 @@
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "@/lib/auth"
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -5,7 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserCircle, Mail, Home } from 'lucide-react'
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const session = await getServerSession(authOptions)
+  const user = session?.user
+
   return (
     <DashboardLayout>
       <div className="space-y-6 p-4 sm:p-6 md:p-8">
@@ -21,25 +26,21 @@ export default function ProfilePage() {
             <form className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <Label htmlFor="firstName" className="text-sm sm:text-base">First Name</Label>
-                  <Input id="firstName" defaultValue="John" className="mt-1" />
+                  <Label htmlFor="name" className="text-sm sm:text-base">Name</Label>
+                  <Input id="name" defaultValue={user?.name || ''} className="mt-1" />
                 </div>
                 <div>
-                  <Label htmlFor="lastName" className="text-sm sm:text-base">Last Name</Label>
-                  <Input id="lastName" defaultValue="Doe" className="mt-1" />
+                  <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
+                  <Input id="email" type="email" defaultValue={user?.email || ''} className="mt-1" readOnly />
                 </div>
-              </div>
-              <div>
-                <Label htmlFor="email" className="text-sm sm:text-base">Email</Label>
-                <Input id="email" type="email" defaultValue="john.doe@example.com" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="phone" className="text-sm sm:text-base">Phone</Label>
-                <Input id="phone" type="tel" defaultValue="+1 (555) 123-4567" className="mt-1" />
+                <Input id="phone" type="tel" className="mt-1" />
               </div>
               <div>
                 <Label htmlFor="address" className="text-sm sm:text-base">Address</Label>
-                <Input id="address" defaultValue="123 Safety Street, Secure City, SC 12345" className="mt-1" />
+                <Input id="address" className="mt-1" />
               </div>
               <Button type="submit" className="w-full sm:w-auto text-sm sm:text-base">Update Profile</Button>
             </form>

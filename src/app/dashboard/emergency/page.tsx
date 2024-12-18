@@ -3,14 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Phone, Ambulance, Truck, Shield } from 'lucide-react'
 
-export default function EmergencyPage() {
-  const emergencyContacts = [
-    { name: 'Emergency Services', number: '911', icon: Phone },
-    { name: 'Local Police', number: '(555) 123-4567', icon: Shield },
-    { name: 'Fire Department', number: '(555) 987-6543', icon: Truck },
-    { name: 'Ambulance', number: '(555) 789-0123', icon: Ambulance },
-  ]
+const emergencyContacts = [
+  { name: 'Emergency Services', number: '911', icon: Phone },
+  { name: 'Local Police', number: '(555) 123-4567', icon: Shield },
+  { name: 'Fire Department', number: '(555) 987-6543', icon: Truck },
+  { name: 'Ambulance', number: '(555) 789-0123', icon: Ambulance },
+]
 
+export default function EmergencyPage() {
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -57,3 +57,4 @@ export default function EmergencyPage() {
     </DashboardLayout>
   )
 }
+
