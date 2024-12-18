@@ -34,7 +34,7 @@ export default function NavigationPage() {
                <MapPin className="h-8 w-8 text-gray-400" />
                <span className="ml-2 text-gray-600">Map Placeholder</span>
              </div>
-             <p className="text-sm mb-2">123 Safety Street, Secure City, SC 12345</p>
+             <p className="text-sm mb-2">IIITDM Jabalpur</p>
              <Button className="w-full">Update Location</Button>
            </CardContent>
          </Card>
