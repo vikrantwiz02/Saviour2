@@ -1,4 +1,3 @@
-import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Bell, AlertTriangle, Info, MapPin } from 'lucide-react'
@@ -13,7 +12,6 @@ const alerts = [
 
 export default function AlertsPage() {
  return (
-   <DashboardLayout>
      <div className="space-y-6">
        <div className="flex justify-between items-center">
          <h2 className="text-2xl font-bold">Real-Time Alerts</h2>
@@ -56,7 +54,6 @@ export default function AlertsPage() {
          </CardContent>
        </Card>
      </div>
-   </DashboardLayout>
  )
 }
 
