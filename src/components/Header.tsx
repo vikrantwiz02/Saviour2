@@ -14,8 +14,8 @@ export default function Header() {
   const router = useRouter()
 
   const handleSignOut = async () => {
-    await signOut({ redirect: false })
-    router.push('/')
+    await signOut({ redirect: false });
+    router.push('/auth/login');
   }
 
   return (
@@ -23,7 +23,8 @@ export default function Header() {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="flex items-center space-x-2">
-            <Image src="/Saviour.png" alt="SAVIOUR Logo" width={180} height={40} />
+            <Image src="/logo.svg" alt="SAVIOUR Logo" width={40} height={40} />
+            <span className="text-2xl font-bold font-serif">SAVIOUR</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="/about" className="hover:text-blue-600 transition-colors hover:scale-105 transform">About</Link>

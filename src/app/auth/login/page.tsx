@@ -11,11 +11,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setIsLoading(true)
+    setError(null)
     
     const formData = new FormData(event.currentTarget)
     const email = formData.get('email') as string
@@ -28,13 +30,11 @@ export default function LoginPage() {
     })
 
     if (result?.error) {
-      console.error(result.error)
-      // Handle error (e.g., show error message to user)
+      setError('Invalid email or password')
+      setIsLoading(false)
     } else {
-      router.push('/dashboard') // Redirect to dashboard on successful login
+      router.push('/dashboard')
     }
-
-    setIsLoading(false)
   }
 
   const handleGoogleLogin = () => {
@@ -52,12 +52,13 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="youremail@gmail.com" required />
+              <Input id="email" name="email" type="email" placeholder="youremail@example.com" required />
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <Input id="password" name="password" type="password" required />
             </div>
+            {error && <p className="text-sm text-red-500">{error}</p>}
             <Button type="submit" className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white hover:from-cyan-600 hover:to-blue-600" disabled={isLoading}>
               {isLoading ? 'Logging in...' : 'Log in'}
             </Button>
@@ -106,3 +107,4 @@ export default function LoginPage() {
     </div>
   )
 }
+
