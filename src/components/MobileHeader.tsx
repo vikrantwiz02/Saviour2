@@ -37,8 +37,12 @@ export function MobileHeader() {
       </div>
       {isMenuOpen && (
         <nav className="px-4 py-2">
-          <Link href="/about" onClick={() => handleLinkClick('/about')}>About</Link>
-          <Link href="/services" onClick={() => handleLinkClick('/services')}>Services</Link>
+          <Link href="/about" onClick={() => handleLinkClick('/about')} className="block py-2">
+            About
+          </Link>
+          <Link href="/services" onClick={() => handleLinkClick('/services')} className="block py-2">
+            Services
+          </Link>
           {/* Add more navigation links as needed */}
         </nav>
       )}
