@@ -1,13 +1,20 @@
+'use client'
+
 import { ReactNode } from 'react'
-import { DynamicSidebar, DynamicMobileHeader } from '@/components/DaynamicDashboardComponents'
+import { DynamicMobileHeader } from '@/components/DaynamicDashboardComponents'
+import { Sidebar } from '@/components/Sidebar'
+import { useResponsive } from '@/hooks/useResponsive'
 
 interface DashboardLayoutProps {
   children: ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  const { isMobile } = useResponsive()
+
   return (
     <div className="flex h-screen bg-gray-100">
+      {!isMobile && <Sidebar />}
       <div className="flex-1 flex flex-col overflow-hidden">
         <DynamicMobileHeader />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">

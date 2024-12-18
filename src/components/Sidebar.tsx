@@ -31,11 +31,11 @@ interface SidebarProps {
 
 export function Sidebar({ onLinkClick, isMobile = false }: SidebarProps) {
   const pathname = usePathname()
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  //const [isCollapsed, setIsCollapsed] = useState(false)
 
-  const toggleSidebar = useCallback(() => {
-    setIsCollapsed(prev => !prev)
-  }, [])
+  //const toggleSidebar = useCallback(() => {
+  //  setIsCollapsed(prev => !prev)
+  //}, [])
 
   const handleLinkClick = (href: string) => {
     if (onLinkClick) {
@@ -44,44 +44,29 @@ export function Sidebar({ onLinkClick, isMobile = false }: SidebarProps) {
   }
 
   return (
-    <SidebarContext.Provider value={{ isCollapsed, toggleSidebar }}>
-      <div className={cn(
-        "flex flex-col bg-white border-r transition-all duration-300",
-        isCollapsed ? "w-16" : "w-64",
-        isMobile && pathname !== '/dashboard' ? "hidden" : ""
-      )}>
-        <div className="flex items-center justify-between p-4">
-          {!isCollapsed && <h2 className="text-2xl font-bold">SAVIOUR</h2>}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={toggleSidebar}
-            className="hidden lg:flex"
-            aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          >
-            {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
-        </div>
-        <ScrollArea className="flex-1">
-          <nav className="space-y-1 px-2">
-            {sidebarItems.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => handleLinkClick(item.href)}>
-                <Button
-                  variant={pathname === item.href ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full justify-start",
-                    isCollapsed ? "px-2" : "px-4"
-                  )}
-                >
-                  <item.icon className={cn("h-5 w-5", isCollapsed ? "mr-0" : "mr-2")} />
-                  {(!isCollapsed || typeof window !== 'undefined' && window.innerWidth < 1024) && <span>{item.name}</span>}
-                </Button>
-              </Link>
-            ))}
-          </nav>
-        </ScrollArea>
+    <div className={cn(
+      "flex flex-col bg-white border-r transition-all duration-300",
+      isMobile ? "w-full" : "w-64"
+    )}>
+      <div className="flex items-center justify-between p-4">
+        <h2 className="text-2xl font-bold">SAVIOUR</h2>
       </div>
-    </SidebarContext.Provider>
+      <ScrollArea className="flex-1">
+        <nav className="space-y-1 px-2">
+          {sidebarItems.map((item) => (
+            <Link key={item.href} href={item.href} onClick={() => handleLinkClick(item.href)}>
+              <Button
+                variant={pathname === item.href ? "secondary" : "ghost"}
+                className="w-full justify-start px-4"
+              >
+                <item.icon className="h-5 w-5 mr-2" />
+                <span>{item.name}</span>
+              </Button>
+            </Link>
+          ))}
+        </nav>
+      </ScrollArea>
+    </div>
   )
 }
 
