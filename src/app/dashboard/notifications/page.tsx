@@ -2,7 +2,7 @@ import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { NotificationSettings } from "@/components/NotificationSettings"
 import { Button } from "@/components/ui/button"
-import { Bell, Smartphone, Mail, AlertTriangle, Settings } from 'lucide-react'
+import { Bell, AlertTriangle, Settings } from 'lucide-react'
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 
