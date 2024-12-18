@@ -1,18 +1,17 @@
 import { ReactNode } from 'react'
-import { Sidebar } from "@/components/Sidebar"
-import { MobileHeader } from "@/components/MobileHeader"
-import { useResponsive } from '@/hooks/useResponsive'
+import dynamic from 'next/dynamic'
+
+const Sidebar = dynamic(() => import("@/components/Sidebar").then(mod => mod.Sidebar), { ssr: false })
+const MobileHeader = dynamic(() => import("@/components/MobileHeader").then(mod => mod.MobileHeader), { ssr: false })
 
 interface DashboardLayoutProps {
-  children: ReactNode
+  children: ReactNode;
 }
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
-  const { isMobile } = useResponsive()
-
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar isMobile={isMobile} />
+      <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <MobileHeader />
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
@@ -29,4 +28,3 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     </div>
   )
 }
-

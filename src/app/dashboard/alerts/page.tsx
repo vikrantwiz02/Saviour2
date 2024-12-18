@@ -4,14 +4,14 @@ import { Badge } from "@/components/ui/badge"
 import { Bell, AlertTriangle, Info, MapPin } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
-export default function AlertsPage() {
- const alerts = [
-   { id: 1, type: 'warning', title: 'Severe Thunderstorm', message: 'Expected in your area within the next 2 hours.', location: 'City Center' },
-   { id: 2, type: 'info', title: 'Road Closure', message: 'Main Street closed due to flooding. Use alternate routes.', location: 'Downtown' },
-   { id: 3, type: 'danger', title: 'Evacuation Order', message: 'Immediate evacuation required for Coastal Zone A.', location: 'Coastal Area' },
-   { id: 4, type: 'warning', title: 'High Wind Advisory', message: 'Strong winds expected. Secure loose outdoor items.', location: 'Citywide' },
- ]
+const alerts = [
+ { id: 1, type: 'warning', title: 'Severe Thunderstorm', message: 'Expected in your area within the next 2 hours.', location: 'City Center' },
+ { id: 2, type: 'info', title: 'Road Closure', message: 'Main Street closed due to flooding. Use alternate routes.', location: 'Downtown' },
+ { id: 3, type: 'danger', title: 'Evacuation Order', message: 'Immediate evacuation required for Coastal Zone A.', location: 'Coastal Area' },
+ { id: 4, type: 'warning', title: 'High Wind Advisory', message: 'Strong winds expected. Secure loose outdoor items.', location: 'Citywide' },
+]
 
+export default function AlertsPage() {
  return (
    <DashboardLayout>
      <div className="space-y-6">
