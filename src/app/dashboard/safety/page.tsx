@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/DashboardLayout"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Shield, BookOpen, Stethoscope, AlertTriangle, Phone } from 'lucide-react'
+import { Shield, BookOpen, Stethoscope, AlertTriangle} from 'lucide-react'
 import { Progress } from "@/components/ui/progress"
 
 export default function SafetyPage() {
@@ -11,13 +11,7 @@ export default function SafetyPage() {
    { title: "Know your evacuation routes", description: "Familiarize yourself with multiple evacuation routes from your home and workplace." },
  ]
 
- const emergencyContacts = [
-   { name: "Emergency Services", number: "911" },
-   { name: "Local Police", number: "(555) 123-4567" },
-   { name: "Fire Department", number: "(555) 987-6543" },
- ]
-
- return (
+return (
    <DashboardLayout>
      <div className="space-y-6">
        <h2 className="text-2xl font-bold mb-4">Safety Guidelines</h2>
