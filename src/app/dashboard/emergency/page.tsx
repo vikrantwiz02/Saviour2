@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 const emergencyContacts = [
- { name: 'Emergency Services', number: '911', icon: Phone },
- { name: 'Local Police', number: '(555) 123-4567', icon: Shield },
- { name: 'Fire Department', number: '(555) 987-6543', icon: Truck },
- { name: 'Ambulance', number: '(555) 789-0123', icon: Ambulance },
+ { name: 'Emergency Services', number: '112', icon: Phone },
+ { name: 'Local Police', number: '100', icon: Shield },
+ { name: 'Fire Department', number: '101', icon: Truck },
+ { name: 'Ambulance', number: '108', icon: Ambulance },
 ]
 
 export default function EmergencyPage() {
@@ -40,15 +40,15 @@ export default function EmergencyPage() {
          <CardContent>
            <ul className="space-y-4 mb-4">
              <li className="flex justify-between items-center">
-               <span className="text-sm">John Doe (Family)</span>
+               <span className="text-sm">Dad</span>
                <Button variant="outline" size="sm">Call</Button>
              </li>
              <li className="flex justify-between items-center">
-               <span className="text-sm">Jane Smith (Neighbor)</span>
+               <span className="text-sm">Mom</span>
                <Button variant="outline" size="sm">Call</Button>
              </li>
              <li className="flex justify-between items-center">
-               <span className="text-sm">Dr. Johnson (Personal Doctor)</span>
+               <span className="text-sm">Brother</span>
                <Button variant="outline" size="sm">Call</Button>
              </li>
            </ul>

@@ -59,24 +59,38 @@ return (
             <ul className="space-y-4">
               <li className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="John Doe" />
-                  <AvatarFallback>JD</AvatarFallback>
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Vikrant Kumar" />
+                  <AvatarFallback>VK</AvatarFallback>
                 </Avatar>
-                <span className="text-sm">John Doe</span>
+                <span className="text-sm">Vikrant Kumar</span>
               </li>
               <li className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Jane Smith" />
-                  <AvatarFallback>JS</AvatarFallback>
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Gunti Ravi Kumar" />
+                  <AvatarFallback>RK</AvatarFallback>
                 </Avatar>
-                <span className="text-sm">Jane Smith</span>
+                <span className="text-sm">Gunti Ravi Kumar</span>
               </li>
               <li className="flex items-center">
                 <Avatar className="h-8 w-8 mr-2">
-                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Alex Johnson" />
-                  <AvatarFallback>AJ</AvatarFallback>
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Harsh Kumar Palas" />
+                  <AvatarFallback>HK</AvatarFallback>
                 </Avatar>
-                <span className="text-sm">Alex Johnson</span>
+                <span className="text-sm">Harsh Kumar Palas</span>
+              </li>
+              <li className="flex items-center">
+                <Avatar className="h-8 w-8 mr-2">
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Anchal Siddharth Patil" />
+                  <AvatarFallback>AP</AvatarFallback>
+                </Avatar>
+                <span className="text-sm">Anchal Siddharth Patil</span>
+              </li>
+              <li className="flex items-center">
+                <Avatar className="h-8 w-8 mr-2">
+                  <AvatarImage src="/placeholder.svg?height=32&width=32" alt="Himshri Vinod Sahare" />
+                  <AvatarFallback>HS</AvatarFallback>
+                </Avatar>
+                <span className="text-sm">Himshri Vinod Sahare</span>
               </li>
             </ul>
           </CardContent>

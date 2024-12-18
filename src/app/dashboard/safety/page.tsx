@@ -100,25 +100,6 @@ export default function SafetyPage() {
            </CardContent>
          </Card>
        </div>
-       <Card>
-         <CardHeader>
-           <CardTitle className="text-lg">Emergency Contacts</CardTitle>
-         </CardHeader>
-         <CardContent>
-           <div className="space-y-4">
-             {emergencyContacts.map((contact, index) => (
-               <div key={index} className="flex justify-between items-center">
-                 <div className="flex items-center">
-                   <Phone className="mr-2 h-4 w-4 text-blue-500" />
-                   <span className="text-sm">{contact.name}</span>
-                 </div>
-                 <Button variant="outline" size="sm">{contact.number}</Button>
-               </div>
-             ))}
-             <Button className="w-full mt-4">Download Safety Guide PDF</Button>
-           </div>
-         </CardContent>
-       </Card>
      </div>
    </DashboardLayout>
  )
