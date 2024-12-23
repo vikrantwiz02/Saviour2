@@ -1,20 +1,15 @@
-import { getServerSession } from "next-auth/next"
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react"
 import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin } from 'lucide-react'
+import LocationSearch from '@/components/location-search'
 import type { WeatherData } from "@/types/weather"
-
-async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
-  const response = await fetch(`${process.env.VERCEL_URL}/api/weather?lat=${lat}&lon=${lon}`)
-  if (!response.ok) {
-    throw new Error('Failed to fetch weather data')
-  }
-  return response.json()
-}
 
 const getWindDirection = (deg: number): string => {
   const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
@@ -34,15 +29,37 @@ const getWeatherIcon = (main: string) => {
   }
 }
 
-export default async function WeatherPage() {
-  const session = await getServerSession(authOptions)
+export default function WeatherPage() {
+  const { data: session, status } = useSession()
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+  const [location, setLocation] = useState({ lat: 51.5074, lon: -0.1278 }) // Default to London
 
-  if (!session) {
-    redirect('/auth/login')
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      redirect('/auth/login')
+    }
+  }, [status])
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const response = await fetch(`/api/weather?lat=${location.lat}&lon=${location.lon}`)
+        if (!response.ok) {
+          throw new Error('Failed to fetch weather data')
+        }
+        const data = await response.json()
+        setWeatherData(data)
+      } catch (error) {
+        console.error('Error fetching weather data:', error)
+      }
+    }
+
+    fetchWeatherData()
+  }, [location])
+
+  if (status === "loading" || !weatherData) {
+    return <div>Loading...</div>
   }
-
-  // Default coordinates (can be replaced with user's location)
-  const weatherData = await getWeatherData(51.5074, -0.1278)
 
   const currentConditions = [
     { 
@@ -77,12 +94,9 @@ export default async function WeatherPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col gap-4 md:flex-row md:justify-between md:items-center">
         <h2 className="text-2xl font-bold">Weather Forecast</h2>
-        <Button variant="outline">
-          <MapPin className="mr-2 h-4 w-4" />
-          Change Location
-        </Button>
+        <LocationSearch onLocationChange={(lat, lon) => setLocation({ lat, lon })} />
       </div>
 
       <Card>
