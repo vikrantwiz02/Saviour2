@@ -6,6 +6,33 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin } from 'lucide-react'
+import type { WeatherData } from "@/types/weather"
+
+async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
+  const response = await fetch(`${process.env.VERCEL_URL}/api/weather?lat=${lat}&lon=${lon}`)
+  if (!response.ok) {
+    throw new Error('Failed to fetch weather data')
+  }
+  return response.json()
+}
+
+const getWindDirection = (deg: number): string => {
+  const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
+  return directions[Math.round(deg / 45) % 8]
+}
+
+const getWeatherIcon = (main: string) => {
+  switch (main.toLowerCase()) {
+    case 'clear':
+      return Sun
+    case 'clouds':
+      return Cloud
+    case 'rain':
+      return CloudRain
+    default:
+      return Cloud
+  }
+}
 
 export default async function WeatherPage() {
   const session = await getServerSession(authOptions)
@@ -14,22 +41,42 @@ export default async function WeatherPage() {
     redirect('/auth/login')
   }
 
-  const forecast = [
-    { day: 'Today', temp: 28, icon: Sun, description: 'Sunny' },
-    { day: 'Tomorrow', temp: 24, icon: Cloud, description: 'Partly Cloudy' },
-    { day: 'Wednesday', temp: 22, icon: CloudRain, description: 'Rain' },
-    { day: 'Thursday', temp: 26, icon: Wind, description: 'Windy' },
-  ]
+  // Default coordinates (can be replaced with user's location)
+  const weatherData = await getWeatherData(51.5074, -0.1278)
 
   const currentConditions = [
-    { label: 'Temperature', value: '28°C', icon: Thermometer },
-    { label: 'Humidity', value: '65%', icon: Droplets },
-    { label: 'Wind Speed', value: '15 km/h', icon: Wind },
-    { label: 'Wind Direction', value: 'NE', icon: Compass },
+    { 
+      label: 'Temperature', 
+      value: `${Math.round(weatherData.current.temp)}°C`, 
+      icon: Thermometer 
+    },
+    { 
+      label: 'Humidity', 
+      value: `${weatherData.current.humidity}%`, 
+      icon: Droplets 
+    },
+    { 
+      label: 'Wind Speed', 
+      value: `${Math.round(weatherData.current.wind_speed * 3.6)} km/h`, 
+      icon: Wind 
+    },
+    { 
+      label: 'Wind Direction', 
+      value: getWindDirection(weatherData.current.wind_deg), 
+      icon: Compass 
+    },
   ]
 
+  const forecast = weatherData.daily.slice(0, 4).map((day, index) => ({
+    day: index === 0 ? 'Today' : new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' }),
+    temp: Math.round(day.temp.day),
+    icon: getWeatherIcon(day.weather[0].main),
+    description: day.weather[0].description,
+    precipitation: Math.round(day.pop * 100)
+  }))
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Weather Forecast</h2>
         <Button variant="outline">
@@ -68,7 +115,7 @@ export default async function WeatherPage() {
                 <day.icon className="mx-auto mb-2 h-8 w-8 text-blue-500" />
                 <h3 className="font-semibold">{day.day}</h3>
                 <p className="text-2xl font-bold">{day.temp}°C</p>
-                <p className="text-sm text-gray-500">{day.description}</p>
+                <p className="text-sm text-gray-500 capitalize">{day.description}</p>
               </div>
             ))}
           </div>
@@ -85,8 +132,8 @@ export default async function WeatherPage() {
               {forecast.map((day) => (
                 <div key={day.day} className="flex items-center">
                   <span className="w-20 text-sm">{day.day}</span>
-                  <Progress value={Math.random() * 100} className="flex-grow mr-2" />
-                  <span className="text-sm font-medium">{Math.round(Math.random() * 100)}%</span>
+                  <Progress value={day.precipitation} className="flex-grow mr-2" />
+                  <span className="text-sm font-medium">{day.precipitation}%</span>
                 </div>
               ))}
             </div>
@@ -98,22 +145,24 @@ export default async function WeatherPage() {
             <CardTitle className="text-lg">Severe Weather Alerts</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-2">
-              <li className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
-                  <span className="text-sm">Heavy Rain Warning</span>
-                </div>
-                <Badge>2:00 PM - 8:00 PM</Badge>
-              </li>
-              <li className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <Wind className="mr-2 h-4 w-4 text-orange-500" />
-                  <span className="text-sm">Strong Wind Advisory</span>
-                </div>
-                <Badge>6:00 PM - 11:00 PM</Badge>
-              </li>
-            </ul>
+            {weatherData.alerts && weatherData.alerts.length > 0 ? (
+              <ul className="space-y-2">
+                {weatherData.alerts.map((alert, index) => (
+                  <li key={index} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
+                      <span className="text-sm">{alert.event}</span>
+                    </div>
+                    <Badge>
+                      {new Date(alert.start * 1000).toLocaleTimeString()} - 
+                      {new Date(alert.end * 1000).toLocaleTimeString()}
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-500">No current weather alerts</p>
+            )}
           </CardContent>
         </Card>
       </div>
