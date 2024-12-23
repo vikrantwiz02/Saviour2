@@ -13,7 +13,6 @@ export async function GET(request: Request) {
   }
 
   try {
-    // Fetch current weather and forecast data
     const response = await fetch(
       `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly&appid=${process.env.OPENWEATHERMAP_API_KEY}&units=metric`
     )
