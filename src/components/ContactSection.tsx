@@ -4,9 +4,9 @@ import { Textarea } from '@/components/ui/textarea'
 
 export default function ContactSection() {
   return (
-    <section className="py-20 bg-gradient-to-r from-blue-100 to-green-100 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <h2 className="text-4xl font-bold text-center mb-12 text-blue-800">Get in Touch</h2>
+    <section className="py-20">
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold mb-8 text-center">Contact Us</h2>
         <div className="max-w-lg mx-auto bg-white rounded-lg shadow-xl p-8">
           <form className="space-y-6">
             <div>

@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { usePathname } from 'next/navigation'
+import Home from '@/app/page'
 
 export default function App() {
   const pathname = usePathname()
@@ -10,7 +11,7 @@ export default function App() {
   const renderContent = () => {
     switch (pathname) {
       case '/':
-        return <h1>Welcome to SAVIOUR Home Page</h1>
+        return <Home />
       case '/about':
         return <h1>About SAVIOUR</h1>
       case '/contact':
@@ -23,7 +24,6 @@ export default function App() {
   return (
     <div>
       {renderContent()}
-      <p>Current path: {pathname}</p>
     </div>
   )
 }
