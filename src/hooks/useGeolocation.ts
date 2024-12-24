@@ -5,6 +5,8 @@ export function useGeolocation() {
     latitude: null,
     longitude: null,
   })
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -14,16 +16,18 @@ export function useGeolocation() {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           })
+          setLoading(false)
         },
         (error) => {
-          console.error("Error getting geolocation:", error)
+          setError("Error getting geolocation: " + error.message)
+          setLoading(false)
         }
       )
     } else {
-      console.log("Geolocation is not available in this browser.")
+      setError("Geolocation is not available in this browser.")
+      setLoading(false)
     }
   }, [])
 
-  return coords
+  return { ...coords, error, loading }
 }
-
