@@ -13,7 +13,7 @@ export function ContactInfo() {
         </div>
         <div>
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-          <Input id="email" type="email" placeholder="your@email.com" />
+          <Input id="email" type="email" placeholder="your@gmail.com" />
         </div>
         <div>
           <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
