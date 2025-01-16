@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
 import { ChevronRight } from 'lucide-react'
 
@@ -28,12 +27,6 @@ export default function HeroSection() {
 
       {/* Main content */}
       <div className="container mx-auto px-4 py-16 relative z-10">
-        <motion.div 
-          className="max-w-4xl mx-auto text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
             Empowering Communities in Times of Crisis
           </h1>
@@ -51,8 +44,7 @@ export default function HeroSection() {
               <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
-        </motion.div>
-      </div>
+        </div>
     </section>
   )
 }
