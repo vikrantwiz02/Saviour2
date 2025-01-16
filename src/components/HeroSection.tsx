@@ -18,7 +18,7 @@ export default function HeroSection() {
   }
 
   return (
-    <section className="relative bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 text-white overflow-hidden min-h-[calc(100vh-4rem)] flex items-center justify-center">
+    <section className="relative bg-gradient-to-br from-blue-900 via-indigo-800 to-purple-900 text-white overflow-hidden min-h-[calc(50vh-4rem)] flex items-center justify-center">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -47,7 +47,7 @@ export default function HeroSection() {
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600 transition-colors duration-300">
+            <Button asChild variant="outline" size="lg" className="border-white text-blue-600 hover:bg-white hover:text-blue-600 transition-colors duration-300">
               <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
@@ -56,4 +56,3 @@ export default function HeroSection() {
     </section>
   )
 }
-
