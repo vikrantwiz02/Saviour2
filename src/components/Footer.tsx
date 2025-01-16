@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-br from-white-400 via-navy-500 to-red-500 animate-gradient text-white py-8 font-sans">
+    <footer className="bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 animate-gradient text-white py-8 font-sans">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="space-y-2">
