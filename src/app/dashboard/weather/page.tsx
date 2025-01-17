@@ -7,7 +7,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2 } from 'lucide-react'
+import { Input } from "@/components/ui/input"
+import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2, Search } from 'lucide-react'
 
 const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || ''
 if (!API_KEY) {
@@ -48,20 +49,6 @@ interface WeatherData {
     start: number;
     end: number;
   }>;
-}
-
-async function getUserLocation(): Promise<{ city: string; country: string }> {
-  try {
-    const response = await fetch('https://ipapi.co/json/')
-    if (!response.ok) {
-      throw new Error('Failed to fetch location data')
-    }
-    const data = await response.json()
-    return { city: data.city, country: data.country_name }
-  } catch (error) {
-    console.error('Error fetching user location:', error)
-    throw error
-  }
 }
 
 async function getWeatherData(city: string): Promise<WeatherData> {
@@ -110,9 +97,10 @@ export default function WeatherPage() {
   const { status } = useSession()
   const router = useRouter()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [userLocation, setUserLocation] = useState<{ city: string; country: string } | null>(null)
+  const [location, setLocation] = useState<string>('')
+  const [currentLocation, setCurrentLocation] = useState<string>('')
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -120,23 +108,27 @@ export default function WeatherPage() {
     }
   }, [status, router])
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const location = await getUserLocation()
-        setUserLocation(location)
-        const data = await getWeatherData(location.city)
-        setWeatherData(data)
-      } catch (err) {
-        console.error('Error:', err)
-        setError('Failed to fetch weather data. Please try again later.')
-      } finally {
-        setLoading(false)
-      }
+  const fetchWeatherData = async (city: string) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const data = await getWeatherData(city)
+      setWeatherData(data)
+      setCurrentLocation(city)
+    } catch (err) {
+      console.error('Error:', err)
+      setError('Failed to fetch weather data. Please check the city name and try again.')
+    } finally {
+      setLoading(false)
     }
+  }
 
-    fetchData()
-  }, [])
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (location.trim()) {
+      fetchWeatherData(location)
+    }
+  }
 
   const getWeatherIcon = (iconCode: string) => {
     switch (iconCode) {
@@ -157,129 +149,148 @@ export default function WeatherPage() {
     )
   }
 
-  if (error) {
-    return (
-      <div className="text-center mt-8">
-        <AlertTriangle className="h-8 w-8 text-red-500 mx-auto mb-4" />
-        <p className="text-red-500">{error}</p>
-      </div>
-    )
-  }
-
-  if (!weatherData || !userLocation) {
-    return null
-  }
-
-  const { current, forecast, alerts } = weatherData
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Weather Forecast</h2>
-        <Button variant="outline">
-          <MapPin className="mr-2 h-4 w-4" />
-          {userLocation.city}, {userLocation.country}
-        </Button>
+        {currentLocation && (
+          <Button variant="outline">
+            <MapPin className="mr-2 h-4 w-4" />
+            {currentLocation}
+          </Button>
+        )}
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Current Conditions</CardTitle>
+          <CardTitle className="text-lg">Enter Location</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center">
-              <Thermometer className="h-5 w-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Temperature</p>
-                <p className="font-semibold">{Math.round(current.main.temp)}°C</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Droplets className="h-5 w-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Humidity</p>
-                <p className="font-semibold">{current.main.humidity}%</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Wind className="h-5 w-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Wind Speed</p>
-                <p className="font-semibold">{Math.round(current.wind.speed * 3.6)} km/h</p>
-              </div>
-            </div>
-            <div className="flex items-center">
-              <Compass className="h-5 w-5 mr-2 text-blue-500" />
-              <div>
-                <p className="text-sm text-gray-500">Wind Direction</p>
-                <p className="font-semibold">{current.wind.deg}°</p>
-              </div>
-            </div>
-          </div>
+          <form onSubmit={handleSubmit} className="flex space-x-2">
+            <Input
+              type="text"
+              placeholder="Enter city name"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="flex-grow"
+            />
+            <Button type="submit">
+              <Search className="mr-2 h-4 w-4" />
+              Search
+            </Button>
+          </form>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">4-Day Forecast</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {forecast.map((day, index) => {
-              const Icon = getWeatherIcon(day.weather[0].icon)
-              return (
-                <div key={index} className="text-center">
-                  <Icon className="mx-auto mb-2 h-8 w-8 text-blue-500" />
-                  <h3 className="font-semibold">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}</h3>
-                  <p className="text-2xl font-bold">{Math.round(day.main.temp)}°C</p>
-                  <p className="text-sm text-gray-500">{day.weather[0].description}</p>
-                </div>
-              )
-            })}
-          </div>
-        </CardContent>
-      </Card>
+      {error && (
+        <div className="text-center mt-8">
+          <AlertTriangle className="h-8 w-8 text-red-500 mx-auto mb-4" />
+          <p className="text-red-500">{error}</p>
+        </div>
+      )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Precipitation Chance</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {forecast.map((day, index) => (
-              <div key={index} className="flex items-center">
-                <span className="w-20 text-sm">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                <Progress value={day.pop * 100} className="flex-grow mr-2" />
-                <span className="text-sm font-medium">{Math.round(day.pop * 100)}%</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Severe Weather Alerts</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {alerts && alerts.length > 0 ? (
-            <ul className="space-y-2">
-              {alerts.map((alert, index) => (
-                <li key={index} className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
-                    <span className="text-sm">{alert.event}</span>
+      {weatherData && (
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Current Conditions</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="flex items-center">
+                  <Thermometer className="h-5 w-5 mr-2 text-blue-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Temperature</p>
+                    <p className="font-semibold">{Math.round(weatherData.current.main.temp)}°C</p>
                   </div>
-                  <Badge>{new Date(alert.start * 1000).toLocaleTimeString()} - {new Date(alert.end * 1000).toLocaleTimeString()}</Badge>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-sm text-gray-500">No severe weather alerts at this time.</p>
-          )}
-        </CardContent>
-      </Card>
+                </div>
+                <div className="flex items-center">
+                  <Droplets className="h-5 w-5 mr-2 text-blue-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Humidity</p>
+                    <p className="font-semibold">{weatherData.current.main.humidity}%</p>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <Wind className="h-5 w-5 mr-2 text-blue-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Wind Speed</p>
+                    <p className="font-semibold">{Math.round(weatherData.current.wind.speed * 3.6)} km/h</p>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <Compass className="h-5 w-5 mr-2 text-blue-500" />
+                  <div>
+                    <p className="text-sm text-gray-500">Wind Direction</p>
+                    <p className="font-semibold">{weatherData.current.wind.deg}°</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">4-Day Forecast</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {weatherData.forecast.map((day, index) => {
+                  const Icon = getWeatherIcon(day.weather[0].icon)
+                  return (
+                    <div key={index} className="text-center">
+                      <Icon className="mx-auto mb-2 h-8 w-8 text-blue-500" />
+                      <h3 className="font-semibold">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}</h3>
+                      <p className="text-2xl font-bold">{Math.round(day.main.temp)}°C</p>
+                      <p className="text-sm text-gray-500">{day.weather[0].description}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Precipitation Chance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {weatherData.forecast.map((day, index) => (
+                  <div key={index} className="flex items-center">
+                    <span className="w-20 text-sm">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}</span>
+                    <Progress value={day.pop * 100} className="flex-grow mr-2" />
+                    <span className="text-sm font-medium">{Math.round(day.pop * 100)}%</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Severe Weather Alerts</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {weatherData.alerts && weatherData.alerts.length > 0 ? (
+                <ul className="space-y-2">
+                  {weatherData.alerts.map((alert, index) => (
+                    <li key={index} className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
+                        <span className="text-sm">{alert.event}</span>
+                      </div>
+                      <Badge>{new Date(alert.start * 1000).toLocaleTimeString()} - {new Date(alert.end * 1000).toLocaleTimeString()}</Badge>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="text-sm text-gray-500">No severe weather alerts at this time.</p>
+              )}
+            </CardContent>
+          </Card>
+        </>
+      )}
     </div>
   )
 }
