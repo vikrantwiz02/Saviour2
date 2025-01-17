@@ -1,43 +1,30 @@
 'use client'
-import React, { useState } from 'react'
+
+import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Facebook, Twitter, Instagram, Mail, Phone } from 'lucide-react'
 
-const gradients = {
-  default: "bg-gradient-to-br from-emerald-600 via-cyan-500 to-blue-600",
-  deepOcean: "bg-gradient-to-br from-slate-800 via-blue-700 to-cyan-600",
-  sunset: "bg-gradient-to-br from-rose-600 via-pink-600 to-purple-700",
-  forest: "bg-gradient-to-br from-green-700 via-emerald-600 to-teal-500",
-  midnight: "bg-gradient-to-br from-indigo-800 via-blue-700 to-violet-600",
-  autumn: "bg-gradient-to-br from-orange-600 via-red-600 to-rose-700"
-}
-
-type GradientKey = keyof typeof gradients;
 
 export default function Footer() {
-  const [currentGradient, setCurrentGradient] = useState<GradientKey>('default')
 
   return (
-    <footer className={`${gradients[currentGradient]} text-white py-8 font-sans`}>
+    <footer className="bg-gradient-to-br from-slate-800 via-blue-700 to-cyan-600 text-white py-8 font-sans">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="space-y-2">
             <Image src="/Saviour.png" alt="SAVIOUR Logo" width={150} height={33} className="mb-2 invert" />
             <p className="text-xs text-emerald-50">Empowering communities through disaster preparedness and response.</p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white hover:text-cyan-100 transition-colors">
+              <Link href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Facebook page" className="text-white hover:text-cyan-100 transition-colors">
                 <Facebook size={16} />
-                <span className="sr-only">Facebook</span>
-              </a>
-              <a href="#" className="text-white hover:text-cyan-100 transition-colors">
+              </Link>
+              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Twitter page" className="text-white hover:text-cyan-100 transition-colors">
                 <Twitter size={16} />
-                <span className="sr-only">Twitter</span>
-              </a>
-              <a href="#" className="text-white hover:text-cyan-100 transition-colors">
+              </Link>
+              <Link href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Visit our Instagram page" className="text-white hover:text-cyan-100 transition-colors">
                 <Instagram size={16} />
-                <span className="sr-only">Instagram</span>
-              </a>
+              </Link>
             </div>
           </div>
 
@@ -72,19 +59,6 @@ export default function Footer() {
             <Link href="/privacy" className="text-xs text-emerald-50 hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="text-xs text-emerald-50 hover:text-white transition-colors">Terms of Service</Link>
           </nav>
-        </div>
-
-        {/* Gradient selector (for demonstration purposes) */}
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          {(Object.keys(gradients) as GradientKey[]).map((key) => (
-            <button
-              key={key}
-              onClick={() => setCurrentGradient(key)}
-              className={`px-2 py-1 text-xs rounded ${currentGradient === key ? 'bg-white text-black' : 'bg-black/20 text-white'}`}
-            >
-              {key}
-            </button>
-          ))}
         </div>
       </div>
     </footer>
