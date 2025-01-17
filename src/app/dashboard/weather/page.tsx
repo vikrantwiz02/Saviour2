@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -38,7 +39,7 @@ interface WeatherData {
     }>;
     pop: number;
   }>;
-  alerts: Array<{
+  alerts?: Array<{
     event: string;
     start: number;
     end: number;
@@ -57,27 +58,21 @@ async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
   const forecastData = await forecastResponse.json()
 
   // Process forecast data to get daily forecasts
-  const dailyForecasts = forecastData.list.filter((_: unknown, index: number) => index % 8 === 0).slice(0, 4)
-
-  // Fetch alerts (Note: This API endpoint might not be available in all regions or API plans)
-  const alertsResponse = await fetch(
-    `${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
-  )
-  const alertsData = await alertsResponse.json()
+  const dailyForecasts = forecastData.list.filter((item: any, index: number) => index % 8 === 0).slice(0, 4)
 
   return {
     current: currentWeatherData,
     forecast: dailyForecasts,
-    alerts: alertsData.alerts || []
+    alerts: [] // OpenWeatherMap doesn't provide alerts in the free tier, so we're leaving this empty
   }
 }
 
 export default function WeatherPage() {
+  const { data: session, status } = useSession()
   const router = useRouter()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -89,7 +84,6 @@ export default function WeatherPage() {
     const fetchWeatherData = async (position: GeolocationPosition) => {
       try {
         const { latitude, longitude } = position.coords
-        setUserLocation([latitude, longitude])
         const data = await getWeatherData(latitude, longitude)
         setWeatherData(data)
         setLoading(false)
@@ -146,7 +140,7 @@ export default function WeatherPage() {
     return null
   }
 
-  const { current, forecast, alerts } = weatherData
+  const { current, forecast } = weatherData
 
   return (
     <div className="space-y-6">
@@ -239,9 +233,9 @@ export default function WeatherPage() {
           <CardTitle className="text-lg">Severe Weather Alerts</CardTitle>
         </CardHeader>
         <CardContent>
-          {alerts && alerts.length > 0 ? (
+          {weatherData.alerts && weatherData.alerts.length > 0 ? (
             <ul className="space-y-2">
-              {alerts.map((alert, index) => (
+              {weatherData.alerts.map((alert, index) => (
                 <li key={index} className="flex items-center justify-between">
                   <div className="flex items-center">
                     <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
@@ -262,24 +256,10 @@ export default function WeatherPage() {
           <CardTitle className="text-lg">Weather Map</CardTitle>
         </CardHeader>
         <CardContent>
-          {userLocation ? (
-            <div className="bg-gray-200 h-64 rounded-lg overflow-hidden">
-              <iframe
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                scrolling="no"
-                marginHeight={0}
-                marginWidth={0}
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${userLocation[1] - 0.1}%2C${userLocation[0] - 0.1}%2C${userLocation[1] + 0.1}%2C${userLocation[0] + 0.1}&amp;layer=mapnik&amp;marker=${userLocation[0]}%2C${userLocation[1]}`}
-              ></iframe>
-            </div>
-          ) : (
-            <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-              <MapPin className="h-12 w-12 text-gray-400" />
-              <span className="ml-2 text-gray-600">Unable to load map</span>
-            </div>
-          )}
+          <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
+            <MapPin className="h-12 w-12 text-gray-400" />
+            <span className="ml-2 text-gray-600">Weather Map Placeholder</span>
+          </div>
           <div className="mt-4 flex justify-between">
             <Button variant="outline">
               <Cloud className="mr-2 h-4 w-4" />
