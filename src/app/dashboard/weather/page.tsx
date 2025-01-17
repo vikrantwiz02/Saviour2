@@ -50,10 +50,24 @@ interface WeatherData {
   }>;
 }
 
-async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
+async function getUserLocation(): Promise<{ city: string; country: string }> {
+  try {
+    const response = await fetch('https://ipapi.co/json/')
+    if (!response.ok) {
+      throw new Error('Failed to fetch location data')
+    }
+    const data = await response.json()
+    return { city: data.city, country: data.country_name }
+  } catch (error) {
+    console.error('Error fetching user location:', error)
+    throw error
+  }
+}
+
+async function getWeatherData(city: string): Promise<WeatherData> {
   try {
     const currentWeatherResponse = await fetch(
-      `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+      `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`
     )
     if (!currentWeatherResponse.ok) {
       throw new Error(`HTTP error! status: ${currentWeatherResponse.status}`)
@@ -61,7 +75,7 @@ async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
     const currentWeatherData = await currentWeatherResponse.json()
 
     const forecastResponse = await fetch(
-      `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+      `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`
     )
     if (!forecastResponse.ok) {
       throw new Error(`HTTP error! status: ${forecastResponse.status}`)
@@ -73,7 +87,7 @@ async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
 
     // Fetch alerts (Note: This API endpoint might not be available in all regions or API plans)
     const alertsResponse = await fetch(
-      `${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
+      `${BASE_URL}/onecall?lat=${currentWeatherData.coord.lat}&lon=${currentWeatherData.coord.lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
     )
     if (!alertsResponse.ok) {
       throw new Error(`HTTP error! status: ${alertsResponse.status}`)
@@ -97,7 +111,7 @@ export default function WeatherPage() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null)
+  const [userLocation, setUserLocation] = useState<{ city: string; country: string } | null>(null)
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -106,32 +120,21 @@ export default function WeatherPage() {
   }, [status, router])
 
   useEffect(() => {
-    const fetchWeatherData = async (position: GeolocationPosition) => {
+    async function fetchData() {
       try {
-        const { latitude, longitude } = position.coords
-        setUserLocation([latitude, longitude])
-        const data = await getWeatherData(latitude, longitude)
+        const location = await getUserLocation()
+        setUserLocation(location)
+        const data = await getWeatherData(location.city)
         setWeatherData(data)
-        setLoading(false)
       } catch (err) {
-        console.error('Error fetching weather data:', err)
-        setError('Failed to fetch weather data. Please check your internet connection and try again.')
+        console.error('Error:', err)
+        setError('Failed to fetch weather data. Please try again later.')
+      } finally {
         setLoading(false)
       }
     }
 
-    const handleError = (error: GeolocationPositionError) => {
-      console.error('Error getting location:', error)
-      setError('Unable to get your location. Please enable location services and refresh the page.')
-      setLoading(false)
-    }
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(fetchWeatherData, handleError)
-    } else {
-      setError('Geolocation is not supported by your browser. Please use a modern browser with location services.')
-      setLoading(false)
-    }
+    fetchData()
   }, [])
 
   const getWeatherIcon = (iconCode: string) => {
@@ -162,7 +165,7 @@ export default function WeatherPage() {
     )
   }
 
-  if (!weatherData) {
+  if (!weatherData || !userLocation) {
     return null
   }
 
@@ -174,7 +177,7 @@ export default function WeatherPage() {
         <h2 className="text-2xl font-bold">Weather Forecast</h2>
         <Button variant="outline">
           <MapPin className="mr-2 h-4 w-4" />
-          {current.name}
+          {userLocation.city}, {userLocation.country}
         </Button>
       </div>
 
@@ -274,46 +277,6 @@ export default function WeatherPage() {
           ) : (
             <p className="text-sm text-gray-500">No severe weather alerts at this time.</p>
           )}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Weather Map</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {userLocation ? (
-            <div className="bg-gray-200 h-64 rounded-lg overflow-hidden">
-              <iframe
-                width="100%"
-                height="100%"
-                frameBorder="0"
-                scrolling="no"
-                marginHeight={0}
-                marginWidth={0}
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${userLocation[1] - 0.1}%2C${userLocation[0] - 0.1}%2C${userLocation[1] + 0.1}%2C${userLocation[0] + 0.1}&amp;layer=mapnik&amp;marker=${userLocation[0]}%2C${userLocation[1]}`}
-              ></iframe>
-            </div>
-          ) : (
-            <div className="bg-gray-200 h-64 rounded-lg flex items-center justify-center">
-              <MapPin className="h-12 w-12 text-gray-400" />
-              <span className="ml-2 text-gray-600">Unable to load map</span>
-            </div>
-          )}
-          <div className="mt-4 flex justify-between">
-            <Button variant="outline">
-              <Cloud className="mr-2 h-4 w-4" />
-              Toggle Cloud Layer
-            </Button>
-            <Button variant="outline">
-              <Thermometer className="mr-2 h-4 w-4" />
-              Toggle Temperature Layer
-            </Button>
-            <Button variant="outline">
-              <Wind className="mr-2 h-4 w-4" />
-              Toggle Wind Layer
-            </Button>
-          </div>
         </CardContent>
       </Card>
     </div>
