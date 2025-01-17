@@ -60,14 +60,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Phone size={14} className="mr-2 text-emerald-200" />
-                <a href="tel:+11234567890" className="text-xs text-emerald-50 hover:text-white transition-colors">+1 (123) 456-7890</a>
+                <a href="tel:+11234567890" className="text-xs text-emerald-50 hover:text-white transition-colors">+91 8306721779</a>
               </li>
             </ul>
           </div>
         </div>
 
         <div className="mt-6 pt-4 border-t border-emerald-400/20 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-emerald-50 mb-2 sm:mb-0">&copy; 2024 SAVIOUR. All rights reserved.</p>
+          <p className="text-xs text-emerald-50 mb-2 sm:mb-0">&copy; 2025 SAVIOUR. All rights reserved.</p>
           <nav className="flex space-x-4">
             <Link href="/privacy" className="text-xs text-emerald-50 hover:text-white transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="text-xs text-emerald-50 hover:text-white transition-colors">Terms of Service</Link>
