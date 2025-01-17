@@ -11,7 +11,7 @@ import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTrian
 
 const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || ''
 if (!API_KEY) {
-  console.error('OpenWeatherMap API key is missing. Please check your environment variables.')
+  console.error('OpenWeatherMap API key is missing. Please check your .env.local file.')
 }
 
 const BASE_URL = 'https://api.openweathermap.org/data/2.5'
@@ -70,7 +70,7 @@ async function getWeatherData(city: string): Promise<WeatherData> {
       `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`
     )
     if (!currentWeatherResponse.ok) {
-      throw new Error(`HTTP error! status: ${currentWeatherResponse.status}`)
+      throw new Error(`Weather API error: ${currentWeatherResponse.status} ${currentWeatherResponse.statusText}`)
     }
     const currentWeatherData = await currentWeatherResponse.json()
 
@@ -78,7 +78,7 @@ async function getWeatherData(city: string): Promise<WeatherData> {
       `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`
     )
     if (!forecastResponse.ok) {
-      throw new Error(`HTTP error! status: ${forecastResponse.status}`)
+      throw new Error(`Forecast API error: ${forecastResponse.status} ${forecastResponse.statusText}`)
     }
     const forecastData = await forecastResponse.json()
 
@@ -90,7 +90,8 @@ async function getWeatherData(city: string): Promise<WeatherData> {
       `${BASE_URL}/onecall?lat=${currentWeatherData.coord.lat}&lon=${currentWeatherData.coord.lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
     )
     if (!alertsResponse.ok) {
-      throw new Error(`HTTP error! status: ${alertsResponse.status}`)
+      console.warn(`Alerts API error: ${alertsResponse.status} ${alertsResponse.statusText}`)
+      // Continue without alerts if this endpoint fails
     }
     const alertsData = await alertsResponse.json()
 
