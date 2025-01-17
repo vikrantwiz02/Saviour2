@@ -47,7 +47,7 @@ export default function HeroSection() {
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="secondary" size="lg" className="border-white text-white hover:bg-white hover:text-blue-600 transition-colors duration-300">
+            <Button asChild variant="secondary" size="lg" className="border-white text-black hover:bg-white hover:text-blue-600 transition-colors duration-300">
               <Link href="/contact">Get in Touch</Link>
             </Button>
           </div>
