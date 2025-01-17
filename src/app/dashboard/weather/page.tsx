@@ -92,7 +92,7 @@ async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
 }
 
 export default function WeatherPage() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
