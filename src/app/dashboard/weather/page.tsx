@@ -1,13 +1,15 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react"
+import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
-import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin } from 'lucide-react'
+import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2 } from 'lucide-react'
 
-const API_KEY = process.env.OPENWEATHERMAP_API_KEY
+const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY
 const BASE_URL = 'https://api.openweathermap.org/data/2.5'
 
 interface WeatherData {
@@ -26,19 +28,17 @@ interface WeatherData {
       description: string;
     }>;
   };
-  forecast: {
-    list: Array<{
-      dt: number;
-      main: {
-        temp: number;
-      };
-      weather: Array<{
-        icon: string;
-        description: string;
-      }>;
-      pop: number;
+  forecast: Array<{
+    dt: number;
+    main: {
+      temp: number;
+    };
+    weather: Array<{
+      icon: string;
+      description: string;
     }>;
-  };
+    pop: number;
+  }>;
   alerts?: Array<{
     event: string;
     start: number;
@@ -46,34 +46,67 @@ interface WeatherData {
   }>;
 }
 
-async function getWeatherData(cityName: string = 'London'): Promise<WeatherData> {
+async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
   const currentWeatherResponse = await fetch(
-    `${BASE_URL}/weather?q=${cityName}&units=metric&appid=${API_KEY}`
+    `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   )
   const currentWeatherData = await currentWeatherResponse.json()
 
   const forecastResponse = await fetch(
-    `${BASE_URL}/forecast?q=${cityName}&units=metric&appid=${API_KEY}`
+    `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
   )
   const forecastData = await forecastResponse.json()
 
+  // Process forecast data to get daily forecasts
+  const dailyForecasts = forecastData.list.filter((item: any, index: number) => index % 8 === 0).slice(0, 4)
+
   return {
     current: currentWeatherData,
-    forecast: forecastData,
+    forecast: dailyForecasts,
     alerts: [] // OpenWeatherMap doesn't provide alerts in the free tier, so we're leaving this empty
   }
 }
 
-export default async function WeatherPage() {
-  const session = await getServerSession(authOptions)
+export default function WeatherPage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  if (!session) {
-    redirect('/auth/login')
-  }
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push('/auth/login')
+    }
+  }, [status, router])
 
-  const weatherData = await getWeatherData()
-  const current = weatherData.current
-  const forecast = weatherData.forecast.list.slice(0, 4) // Get next 4 forecasts
+  useEffect(() => {
+    const fetchWeatherData = async (position: GeolocationPosition) => {
+      try {
+        const { latitude, longitude } = position.coords
+        const data = await getWeatherData(latitude, longitude)
+        setWeatherData(data)
+        setLoading(false)
+      } catch (err) {
+        console.error('Error fetching weather data:', err)
+        setError('Failed to fetch weather data. Please try again later.')
+        setLoading(false)
+      }
+    }
+
+    const handleError = (error: GeolocationPositionError) => {
+      console.error('Error getting location:', error)
+      setError('Unable to get your location. Please enable location services and try again.')
+      setLoading(false)
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(fetchWeatherData, handleError)
+    } else {
+      setError('Geolocation is not supported by your browser')
+      setLoading(false)
+    }
+  }, [])
 
   const getWeatherIcon = (iconCode: string) => {
     switch (iconCode) {
@@ -84,6 +117,30 @@ export default async function WeatherPage() {
       default: return Cloud
     }
   }
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin" />
+        <span className="ml-2">Loading weather data...</span>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="text-center mt-8">
+        <AlertTriangle className="h-8 w-8 text-red-500 mx-auto mb-4" />
+        <p className="text-red-500">{error}</p>
+      </div>
+    )
+  }
+
+  if (!weatherData) {
+    return null
+  }
+
+  const { current, forecast } = weatherData
 
   return (
     <div className="space-y-6">
