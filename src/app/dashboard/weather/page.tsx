@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -8,7 +9,11 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2 } from 'lucide-react'
 
-const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY
+const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || ''
+if (!API_KEY) {
+  console.error('OpenWeatherMap API key is missing. Please check your environment variables.')
+}
+
 const BASE_URL = 'https://api.openweathermap.org/data/2.5'
 
 interface WeatherData {
@@ -46,33 +51,48 @@ interface WeatherData {
 }
 
 async function getWeatherData(lat: number, lon: number): Promise<WeatherData> {
-  const currentWeatherResponse = await fetch(
-    `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  )
-  const currentWeatherData = await currentWeatherResponse.json()
+  try {
+    const currentWeatherResponse = await fetch(
+      `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+    )
+    if (!currentWeatherResponse.ok) {
+      throw new Error(`HTTP error! status: ${currentWeatherResponse.status}`)
+    }
+    const currentWeatherData = await currentWeatherResponse.json()
 
-  const forecastResponse = await fetch(
-    `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
-  )
-  const forecastData = await forecastResponse.json()
+    const forecastResponse = await fetch(
+      `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`
+    )
+    if (!forecastResponse.ok) {
+      throw new Error(`HTTP error! status: ${forecastResponse.status}`)
+    }
+    const forecastData = await forecastResponse.json()
 
-  // Process forecast data to get daily forecasts
-  const dailyForecasts = forecastData.list.filter((_: unknown, index: number) => index % 8 === 0).slice(0, 4)
+    // Process forecast data to get daily forecasts
+    const dailyForecasts = forecastData.list.filter((_: unknown, index: number) => index % 8 === 0).slice(0, 4)
 
-  // Fetch alerts (Note: This API endpoint might not be available in all regions or API plans)
-  const alertsResponse = await fetch(
-    `${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
-  )
-  const alertsData = await alertsResponse.json()
+    // Fetch alerts (Note: This API endpoint might not be available in all regions or API plans)
+    const alertsResponse = await fetch(
+      `${BASE_URL}/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,daily&appid=${API_KEY}`
+    )
+    if (!alertsResponse.ok) {
+      throw new Error(`HTTP error! status: ${alertsResponse.status}`)
+    }
+    const alertsData = await alertsResponse.json()
 
-  return {
-    current: currentWeatherData,
-    forecast: dailyForecasts,
-    alerts: alertsData.alerts || []
+    return {
+      current: currentWeatherData,
+      forecast: dailyForecasts,
+      alerts: alertsData.alerts || []
+    }
+  } catch (error) {
+    console.error('Error fetching weather data:', error)
+    throw error
   }
 }
 
 export default function WeatherPage() {
+  const { data: session, status } = useSession()
   const router = useRouter()
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -95,21 +115,21 @@ export default function WeatherPage() {
         setLoading(false)
       } catch (err) {
         console.error('Error fetching weather data:', err)
-        setError('Failed to fetch weather data. Please try again later.')
+        setError('Failed to fetch weather data. Please check your internet connection and try again.')
         setLoading(false)
       }
     }
 
     const handleError = (error: GeolocationPositionError) => {
       console.error('Error getting location:', error)
-      setError('Unable to get your location. Please enable location services and try again.')
+      setError('Unable to get your location. Please enable location services and refresh the page.')
       setLoading(false)
     }
 
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(fetchWeatherData, handleError)
     } else {
-      setError('Geolocation is not supported by your browser')
+      setError('Geolocation is not supported by your browser. Please use a modern browser with location services.')
       setLoading(false)
     }
   }, [])
