@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2, Search } from 'lucide-react'
+import { Sun, Cloud, CloudRain, Wind, Thermometer, Droplets, Compass, AlertTriangle, MapPin, Loader2, Search, Umbrella } from 'lucide-react'
 
 const API_KEY = process.env.NEXT_PUBLIC_OPENWEATHERMAP_API_KEY || ''
 if (!API_KEY) {
@@ -137,6 +137,20 @@ export default function WeatherPage() {
     }
   }
 
+  const getPrecipitationDescription = (pop: number) => {
+    if (pop < 0.2) return "Low chance of precipitation"
+    if (pop < 0.5) return "Moderate chance of precipitation"
+    if (pop < 0.8) return "High chance of precipitation"
+    return "Very high chance of precipitation"
+  }
+
+  const getPrecipitationColor = (pop: number) => {
+    if (pop < 0.2) return "bg-green-500"
+    if (pop < 0.5) return "bg-yellow-500"
+    if (pop < 0.8) return "bg-orange-500"
+    return "bg-red-500"
+  }
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-bold">Weather Forecast</h2>
@@ -239,15 +253,21 @@ export default function WeatherPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Precipitation Chance</CardTitle>
+              <CardTitle className="text-lg flex items-center">
+                <Umbrella className="mr-2 h-5 w-5" />
+                Precipitation Chance
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-6">
                 {weatherData.forecast.map((day, index) => (
-                  <div key={index} className="flex items-center">
-                    <span className="w-20 text-sm">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'short' })}</span>
-                    <Progress value={day.pop * 100} className="flex-grow mr-2" />
-                    <span className="text-sm font-medium">{Math.round(day.pop * 100)}%</span>
+                  <div key={index} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium">{new Date(day.dt * 1000).toLocaleDateString('en-US', { weekday: 'long' })}</span>
+                      <Badge variant="outline">{Math.round(day.pop * 100)}%</Badge>
+                    </div>
+                    <Progress value={day.pop * 100} className={`h-2 ${getPrecipitationColor(day.pop)}`} />
+                    <p className="text-sm text-gray-500">{getPrecipitationDescription(day.pop)}</p>
                   </div>
                 ))}
               </div>
