@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useSession } from "next-auth/react"
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -100,13 +100,11 @@ export default function WeatherPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [location, setLocation] = useState<string>('')
-  const [currentLocation, setCurrentLocation] = useState<string>('')
 
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push('/auth/login')
-    }
-  }, [status, router])
+  if (status === "unauthenticated") {
+    router.push('/auth/login')
+    return null
+  }
 
   const fetchWeatherData = async (city: string) => {
     setLoading(true)
@@ -114,7 +112,6 @@ export default function WeatherPage() {
     try {
       const data = await getWeatherData(city)
       setWeatherData(data)
-      setCurrentLocation(city)
     } catch (err) {
       console.error('Error:', err)
       setError('Failed to fetch weather data. Please check the city name and try again.')
@@ -140,26 +137,9 @@ export default function WeatherPage() {
     }
   }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Loader2 className="h-8 w-8 animate-spin" />
-        <span className="ml-2">Loading weather data...</span>
-      </div>
-    )
-  }
-
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Weather Forecast</h2>
-        {currentLocation && (
-          <Button variant="outline">
-            <MapPin className="mr-2 h-4 w-4" />
-            {currentLocation}
-          </Button>
-        )}
-      </div>
+      <h2 className="text-2xl font-bold">Weather Forecast</h2>
 
       <Card>
         <CardHeader>
@@ -174,8 +154,12 @@ export default function WeatherPage() {
               onChange={(e) => setLocation(e.target.value)}
               className="flex-grow"
             />
-            <Button type="submit">
-              <Search className="mr-2 h-4 w-4" />
+            <Button type="submit" disabled={loading}>
+              {loading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
               Search
             </Button>
           </form>
@@ -193,7 +177,10 @@ export default function WeatherPage() {
         <>
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Current Conditions</CardTitle>
+              <CardTitle className="text-lg flex items-center">
+                <MapPin className="mr-2 h-5 w-5" />
+                Current Conditions in {weatherData.current.name}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
