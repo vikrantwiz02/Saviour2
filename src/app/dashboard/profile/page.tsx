@@ -6,7 +6,15 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { UserCircle, Home, Shield } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getUserRole } from "@/lib/clerk-mongodb"
+
+async function getUserRole(userId: string) {
+  const res = await fetch(`/api/getUserRole?userId=${userId}`)
+  if (!res.ok) {
+    throw new Error('Failed to fetch user role')
+  }
+  const data = await res.json()
+  return data.role
+}
 
 export default async function ProfilePage() {
   const user = await currentUser()

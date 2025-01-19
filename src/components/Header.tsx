@@ -3,15 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Menu, X } from 'lucide-react'
 import { UserButton, SignInButton, SignUpButton, useUser } from '@clerk/nextjs'
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { isSignedIn, user } = useUser()
-  const router = useRouter()
+  const { isSignedIn } = useUser()
 
   return (
     <header className="bg-white text-black font-sans">
