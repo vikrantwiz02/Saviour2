@@ -1,74 +1,84 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Phone, Ambulance, Truck, Shield, Plus } from 'lucide-react'
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Truck, Phone, Shield, Plus } from 'lucide-react'
 
-export default async function EmergencyPage() {
-  const emergencyContacts = [
-    { name: 'Emergency Services', number: '112', icon: Phone },
-    { name: 'Local Police', number: '100', icon: Shield },
-    { name: 'Fire Department', number: '101', icon: Truck },
-    { name: 'Ambulance', number: '102', icon: Ambulance },
-  ]
-
+export default function EmergencyPage() {
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Emergency Contacts</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {emergencyContacts.map((contact) => (
-          <Card key={contact.name} className="flex flex-col">
-            <CardHeader>
-              <CardTitle className="text-lg flex items-center">
-                <contact.icon className="mr-2 h-5 w-5" />
-                {contact.name}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow flex flex-col justify-between">
-              <p className="text-2xl font-bold mb-4">{contact.number}</p>
-              <Button className="w-full">Call Now</Button>
-            </CardContent>
-          </Card>
-        ))}
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Emergency Services</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Card className="bg-red-100">
+          <CardHeader>
+            <CardTitle className="text-red-800 flex items-center">
+              <Truck className="mr-2" />
+              Fire Department
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-red-700 mb-4">For fire emergencies and rescue operations</p>
+            <p className="text-2xl font-bold text-red-800">Call: 911</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-blue-100">
+          <CardHeader>
+            <CardTitle className="text-blue-800 flex items-center">
+              <Shield className="mr-2" />
+              Police Department
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-blue-700 mb-4">For law enforcement and immediate danger</p>
+            <p className="text-2xl font-bold text-blue-800">Call: 911</p>
+          </CardContent>
+        </Card>
+        <Card className="bg-green-100">
+          <CardHeader>
+            <CardTitle className="text-green-800 flex items-center">
+              <Plus className="mr-2" />
+              Medical Emergency
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-green-700 mb-4">For life-threatening medical situations</p>
+            <p className="text-2xl font-bold text-green-800">Call: 911</p>
+          </CardContent>
+        </Card>
       </div>
-      <Card>
+      <Card className="mt-8">
         <CardHeader>
-          <CardTitle className="text-lg">Personal Emergency Contacts</CardTitle>
+          <CardTitle>Emergency Preparedness</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-4 mb-4">
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Dad</span>
-              <Button variant="outline" size="sm">Call</Button>
+          <ul className="list-disc pl-6 space-y-2">
+            <li>Create an emergency kit with essential supplies</li>
+            <li>Develop a family communication plan</li>
+            <li>Stay informed about local emergency alerts</li>
+            <li>Know evacuation routes and shelter locations</li>
+            <li>Learn basic first aid and CPR</li>
+          </ul>
+        </CardContent>
+      </Card>
+      <Card className="mt-8">
+        <CardHeader>
+          <CardTitle className="flex items-center">
+            <Phone className="mr-2" />
+            Emergency Contacts
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ul className="space-y-2">
+            <li>
+              <strong>Police Non-Emergency:</strong> 555-0100
             </li>
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Mom</span>
-              <Button variant="outline" size="sm">Call</Button>
+            <li>
+              <strong>Fire Department Non-Emergency:</strong> 555-0200
             </li>
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Brother</span>
-              <Button variant="outline" size="sm">Call</Button>
+            <li>
+              <strong>Poison Control:</strong> 1-800-222-1222
+            </li>
+            <li>
+              <strong>Local Hospital:</strong> 555-0300
             </li>
           </ul>
-          <form className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="Contact Name" />
-              </div>
-              <div>
-                <Label htmlFor="relation">Relation</Label>
-                <Input id="relation" placeholder="Relation" />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" placeholder="Phone Number" type="tel" />
-            </div>
-            <Button className="w-full">
-              <Plus className="mr-2 h-4 w-4" /> Add New Contact
-            </Button>
-          </form>
         </CardContent>
       </Card>
     </div>
