@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { Webhook } from 'svix'
 import { WebhookEvent } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs/server'
 
 const mongoUri = process.env.MONGODB_URI
 const client = new MongoClient(mongoUri!)
@@ -105,5 +106,21 @@ export async function getUserRole(userId: string) {
   const users = db.collection('users')
   const user = await users.findOne({ clerkId: userId })
   return user ? user.role : 'user'
+}
+
+export async function checkUserRole() {
+  const { userId } = await auth()
+  return userId ? await getUserRole(userId) : null
+}
+
+export async function requireAuth() {
+  const { userId } = await auth()
+  if (!userId) throw new Error("Authentication required")
+  return userId
+}
+
+export async function isAdmin() {
+  const role = await checkUserRole()
+  return role === "admin"
 }
 

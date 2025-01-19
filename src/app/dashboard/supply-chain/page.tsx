@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
@@ -8,11 +5,6 @@ import { Package, Truck, Clock, TrendingUp, TrendingDown } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 
 export default async function SupplyChainPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const supplies = [
     { name: 'Food Supplies', stock: 75, nextDelivery: '2 days', trend: 'up' },

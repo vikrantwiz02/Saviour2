@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Phone, Ambulance, Truck, Shield, Plus } from 'lucide-react'
@@ -8,12 +5,6 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 export default async function EmergencyPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
-
   const emergencyContacts = [
     { name: 'Emergency Services', number: '112', icon: Phone },
     { name: 'Local Police', number: '100', icon: Shield },

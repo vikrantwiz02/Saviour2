@@ -1,17 +1,9 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Users, HandHelping, MessageSquare, TrendingUp } from 'lucide-react'
 import { CommunityForm } from "@/components/CommunityForm"
 import { Button } from "@/components/ui/button"
 
 export default async function CommunityPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const stats = [
     { name: 'Active Volunteers', icon: Users, value: 127, change: 12 },

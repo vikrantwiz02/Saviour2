@@ -1,17 +1,10 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Map, AlertTriangle, Info, Layers } from 'lucide-react'
 
 export default async function RiskMapPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const highRiskAreas = [
     { name: 'Coastal Region A', risk: 'High' },

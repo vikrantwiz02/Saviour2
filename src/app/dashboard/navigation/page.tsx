@@ -1,18 +1,9 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Navigation, AlertTriangle, Compass } from 'lucide-react'
 
 export default async function NavigationPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
-
   const routes = [
     { id: 1, name: 'Route A', status: 'Congested', icon: AlertTriangle, iconColor: 'text-yellow-500' },
     { id: 2, name: 'Route B', status: 'Clear', icon: Compass, iconColor: 'text-green-500' },

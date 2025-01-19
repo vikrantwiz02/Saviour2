@@ -1,17 +1,10 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Shield, BookOpen, Stethoscope, AlertTriangle } from 'lucide-react'
 import { Progress } from "@/components/ui/progress"
 
 export default async function SafetyPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const safetyTips = [
     { title: "Create an emergency kit", description: "Include water, non-perishable food, first aid supplies, and important documents." },

@@ -1,17 +1,8 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { BarChart, Calendar, FileText, TrendingUp, AlertTriangle } from 'lucide-react'
 
 export default async function HistoricalPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
-
   const recentEvents = [
     { date: '2023-05-15', type: 'Flood', severity: 'Moderate', affected: 5000 },
     { date: '2023-03-22', type: 'Wildfire', severity: 'Severe', affected: 10000 },
