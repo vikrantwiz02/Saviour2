@@ -1,67 +1,88 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Users, HandHelping, MessageSquare, TrendingUp } from 'lucide-react'
-import { CommunityForm } from "@/components/CommunityForm"
+import { Users, HelpingHand, MessageSquare, TrendingUp } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 
-export default async function CommunityPage() {
-
-  const stats = [
-    { name: 'Active Volunteers', icon: Users, value: 127, change: 12 },
-    { name: 'Open Requests', icon: HandHelping, value: 15, change: -3 },
-    { name: 'Community Messages', icon: MessageSquare, value: 89, change: 24 },
-  ]
-
+export default function NotificationsPage() {
   return (
-    <div className="space-y-6">
-      <h2 className="text-2xl font-bold mb-4">Community Support</h2>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {stats.map((stat) => (
-          <Card key={stat.name} className="flex flex-col">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.name}
-              </CardTitle>
-              <stat.icon className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground flex items-center mt-1">
-                <TrendingUp className={`h-3 w-3 mr-1 ${stat.change > 0 ? 'text-green-500' : 'text-red-500 transform rotate-180'}`} />
-                {Math.abs(stat.change)} since last week
-              </p>
-            </CardContent>
-          </Card>
-        ))}
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Notifications</h1>
+      <div className="grid gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Recent Notifications</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-start gap-4 p-4 bg-blue-50 rounded-lg">
+                <HelpingHand className="h-5 w-5 text-blue-500 mt-1" />
+                <div>
+                  <h3 className="font-semibold">Emergency Alert</h3>
+                  <p className="text-sm text-gray-600">Severe weather warning in your area. Take necessary precautions.</p>
+                  <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-green-50 rounded-lg">
+                <Users className="h-5 w-5 text-green-500 mt-1" />
+                <div>
+                  <h3 className="font-semibold">Community Update</h3>
+                  <p className="text-sm text-gray-600">New volunteer opportunity available in your neighborhood.</p>
+                  <p className="text-xs text-gray-500 mt-1">5 hours ago</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-purple-50 rounded-lg">
+                <MessageSquare className="h-5 w-5 text-purple-500 mt-1" />
+                <div>
+                  <h3 className="font-semibold">Message</h3>
+                  <p className="text-sm text-gray-600">New response to your community forum post.</p>
+                  <p className="text-xs text-gray-500 mt-1">1 day ago</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4 p-4 bg-orange-50 rounded-lg">
+                <TrendingUp className="h-5 w-5 text-orange-500 mt-1" />
+                <div>
+                  <h3 className="font-semibold">Status Update</h3>
+                  <p className="text-sm text-gray-600">Your emergency preparedness score has improved!</p>
+                  <p className="text-xs text-gray-500 mt-1">2 days ago</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Notification Settings</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-semibold">Emergency Alerts</h3>
+                  <p className="text-sm text-gray-600">Receive notifications for emergency situations</p>
+                </div>
+                <Button variant="outline">Configure</Button>
+              </div>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-semibold">Community Updates</h3>
+                  <p className="text-sm text-gray-600">Get updates about community events and activities</p>
+                </div>
+                <Button variant="outline">Configure</Button>
+              </div>
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="font-semibold">Message Notifications</h3>
+                  <p className="text-sm text-gray-600">Notifications for new messages and responses</p>
+                </div>
+                <Button variant="outline">Configure</Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Offer or Request Support</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <CommunityForm />
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Recent Community Activities</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-4">
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Food distribution event organized</span>
-              <Button size="sm">View Details</Button>
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Volunteer training session scheduled</span>
-              <Button size="sm">View Details</Button>
-            </li>
-            <li className="flex justify-between items-center">
-              <span className="text-sm">Community cleanup initiative started</span>
-              <Button size="sm">View Details</Button>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
     </div>
   )
 }
