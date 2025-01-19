@@ -26,6 +26,9 @@ export default function Footer() {
                 <Instagram size={16} />
               </Link>
             </div>
+            <Link href="/auth/admin-login" className="text-xs text-emerald-50 hover:text-white transition-colors mt-2 block">
+              Admin Login
+            </Link>
           </div>
 
           <div>
