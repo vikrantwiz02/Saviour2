@@ -1,11 +1,12 @@
-'use client'
-
-import { useSession } from "next-auth/react"
+import { useUser as useClerkUser } from "@clerk/nextjs"
 
 export function useUser() {
-  const { data: session, status } = useSession()
-  const isLoading = status === "loading"
-  const user = session?.user
-
-  return { user, isLoading }
+  const { user, isLoaded, isSignedIn } = useClerkUser()
+  
+  return {
+    user,
+    isLoaded,
+    isSignedIn
+  }
 }
+
