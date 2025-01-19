@@ -3,7 +3,9 @@ import { NextResponse } from 'next/server'
 
 export async function POST(req: Request) {
   try {
+    console.log('Received webhook request') // Debugging line
     const result = await handleClerkWebhook(req)
+    console.log('Webhook handled successfully') // Debugging line
     return NextResponse.json(result)
   } catch (error) {
     console.error('Webhook error:', error)

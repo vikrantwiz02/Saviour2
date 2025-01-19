@@ -3,17 +3,26 @@ import { Webhook } from 'svix'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { auth } from '@clerk/nextjs/server'
 
-const mongoUri = process.env.MONGODB_URI
+const mongoUri = process.env.MONGODB_URI || '';
 
-if (!mongoUri) {
-  throw new Error('MONGODB_URI is not defined in the environment variables')
+console.log('MongoDB URI:', mongoUri) // Debugging line
+
+if (!mongoUri || mongoUri.trim() === '') {
+  console.error('MONGODB_URI is not defined or empty in the environment variables')
+  throw new Error('MONGODB_URI is not defined or empty in the environment variables')
 }
 
-const client = new MongoClient(mongoUri)
+let client: MongoClient | null = null
 
 export async function connectToDatabase() {
+  if (client) {
+    return client.db('saviour')
+  }
+
   try {
+    client = new MongoClient(mongoUri!)
     await client.connect()
+    console.log('Connected to MongoDB')
     return client.db('saviour')
   } catch (error) {
     console.error('Failed to connect to MongoDB:', error)

@@ -1,20 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  // Remove appDir as it's no longer needed in Next.js 15
-  // Handle Edge Runtime configuration
-  async headers() {
-    return [
-      {
-        source: '/((?!api/|_next/|_static/|examples/|[\\w-]+\\.\\w+).*)',
-        headers: [
-          {
-            key: 'x-edge-runtime',
-            value: '1',
-          },
-        ],
-      },
-    ]
+  env: {
+    MONGODB_URI: process.env.MONGODB_URI,
+    WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
+    NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+    CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
   },
 }
 
