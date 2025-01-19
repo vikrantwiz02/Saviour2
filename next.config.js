@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    appDir: true,
-  },
-  // Specify which routes should use Edge Runtime
+  // Remove appDir as it's no longer needed in Next.js 15
+  // Handle Edge Runtime configuration
   async headers() {
     return [
       {
