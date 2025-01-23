@@ -1,65 +1,90 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useSession } from "next-auth/react"
+import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
-export default function UserProfile() {
-  const { data: session } = useSession()
-  const [isEditing, setIsEditing] = useState(false)
+export function UserProfile() {
+  const { user, isLoaded, isSignedIn } = useUser()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    if (session?.user) {
-      setName(session.user.name || '')
-      setEmail(session.user.email || '')
+    if (isLoaded && isSignedIn) {
+      setName(user.fullName || '')
+      setEmail(user.primaryEmailAddress?.emailAddress || '')
     }
-  }, [session])
+  }, [isLoaded, isSignedIn, user])
 
-  const handleSave = () => {
-    // Here you would typically send an API request to update the user's information
-    setIsEditing(false)
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!user) return
+
+    try {
+      await user.update({
+        firstName: name.split(' ')[0],
+        lastName: name.split(' ').slice(1).join(' '),
+      })
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Failed to update profile:', error)
+    }
+  }
+
+  if (!isLoaded || !isSignedIn) {
+    return <div>Loading...</div>
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>User Profile</CardTitle>
-        <CardDescription>Manage your personal information</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="flex items-center space-x-4 mb-4">
-          <Avatar className="h-20 w-20">
-            <AvatarImage src={session?.user?.image || "/placeholder.svg?height=80&width=80"} alt={name} />
-            <AvatarFallback>{name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-          </Avatar>
-          <div>
-            <h3 className="text-2xl font-bold">{name}</h3>
-            <p className="text-gray-500">{email}</p>
-          </div>
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Avatar className="w-20 h-20">
+          <AvatarImage src={user.imageUrl} alt={user.fullName || 'User'} />
+          <AvatarFallback>{user.fullName?.[0] || 'U'}</AvatarFallback>
+        </Avatar>
+        <div>
+          <h2 className="text-2xl font-bold">{user.fullName || 'User'}</h2>
+          <p className="text-gray-500">{user.primaryEmailAddress?.emailAddress}</p>
         </div>
-        {isEditing ? (
-          <form onSubmit={(e) => { e.preventDefault(); handleSave(); }} className="space-y-4">
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" value={name} onChange={(e) => setName(e.target.value)} />
-            </div>
-            <div>
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} readOnly />
-            </div>
+      </div>
+
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled
+            />
+          </div>
+          <div className="flex space-x-4">
             <Button type="submit">Save Changes</Button>
-          </form>
-        ) : (
-          <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
-        )}
-      </CardContent>
-    </Card>
+            <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <Button onClick={() => setIsEditing(true)}>Edit Profile</Button>
+      )}
+    </div>
   )
 }
 

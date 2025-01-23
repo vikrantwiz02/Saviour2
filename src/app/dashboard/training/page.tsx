@@ -1,6 +1,4 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { BookOpen, Video, Award, Clock, Calendar, Users } from 'lucide-react'
@@ -8,11 +6,6 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 
 export default async function TrainingPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const courses = [
     { title: "Disaster Preparedness 101", type: "Online Course", duration: "2 hours", progress: 75 },

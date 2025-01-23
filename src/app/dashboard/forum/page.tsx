@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { MessageSquare, Users, TrendingUp, PlusCircle, Eye, ThumbsUp } from 'lucide-react'
@@ -9,11 +6,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
 
 export default async function ForumPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const recentThreads = [
     { title: "Emergency Kit Essentials", author: "Vikrant Kumar", replies: 23, views: 156, likes: 45 },

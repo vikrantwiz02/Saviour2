@@ -1,14 +1,16 @@
 'use client'
 
-import { SessionProvider } from "next-auth/react"
-import { Session } from "next-auth"
+import { ClerkProvider } from "@clerk/nextjs"
 
 type ProvidersProps = {
   children: React.ReactNode
-  session: Session | null
 }
 
-export function Providers({ children, session }: ProvidersProps) {
-  return <SessionProvider session={session}>{children}</SessionProvider>
+export function Providers({ children }: ProvidersProps) {
+  return (
+    <ClerkProvider>
+      {children}
+    </ClerkProvider>
+  )
 }
 

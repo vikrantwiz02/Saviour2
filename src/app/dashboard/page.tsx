@@ -1,6 +1,4 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
@@ -8,11 +6,6 @@ import { Bell, AlertTriangle, CheckCircle, Users, BarChart, TrendingUp } from 'l
 import { Button } from "@/components/ui/button"
 
 export default async function Dashboard() {
- const session = await getServerSession(authOptions)
-
- if (!session) {
-   redirect('/auth/login')
- }
 
  return (
    <div className="space-y-6">

@@ -1,17 +1,9 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Newspaper, ExternalLink, Bell, Radio } from 'lucide-react'
 import { Badge } from "@/components/ui/badge"
 
 export default async function NewsPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
 
   const newsItems = [
     { id: 1, title: "Local Flood Warning Issued", source: "City Emergency Services", category: "Alert" },

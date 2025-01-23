@@ -1,18 +1,11 @@
-import { getServerSession } from "next-auth/next"
-import { redirect } from 'next/navigation'
-import { authOptions } from "@/lib/auth"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Package, Droplet, Battery, Stethoscope, Plus, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 
 export default async function ResourceManagementPage() {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    redirect('/auth/login')
-  }
-
+ 
   const resources = [
     { name: 'Food Supplies', icon: Package, level: 75, trend: 'up' },
     { name: 'Water', icon: Droplet, level: 60, trend: 'down' },
