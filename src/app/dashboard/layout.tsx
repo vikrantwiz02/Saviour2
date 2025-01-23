@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs'
 import { getUserRole } from '@/lib/clerk-mongodb'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
@@ -9,8 +9,8 @@ export default async function DashboardLayout({
 }: {
   children: ReactNode
 }) {
-  const { userId } = await auth()
-  
+  const { userId } = auth()
+
   if (!userId) {
     redirect('/sign-in')
   }

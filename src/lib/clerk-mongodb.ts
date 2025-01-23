@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { Webhook } from 'svix'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { auth } from '@clerk/nextjs/server'
+import { auth } from '@clerk/nextjs'
 
 const mongoUri = process.env.MONGODB_URI || '';
 
@@ -123,14 +123,8 @@ export async function getUserRole(userId: string) {
 }
 
 export async function checkUserRole() {
-  const { userId } = await auth()
+  const { userId } = auth()
   return userId ? await getUserRole(userId) : null
-}
-
-export async function requireAuth() {
-  const { userId } = await auth()
-  if (!userId) throw new Error("Authentication required")
-  return userId
 }
 
 export async function isAdmin() {
