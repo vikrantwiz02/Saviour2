@@ -36,7 +36,6 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@eslint/eslintrc": "^3",
     "@types/next-auth": "^3.13.0",
     "@types/node": "^20",
@@ -47,16 +46,5 @@
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-=======
-    "@types/node": "^20.8.2",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.2.8",
-    "autoprefixer": "^10.4.16",
-    "eslint": "^8.50.0",
-    "eslint-config-next": "14.1.0",
-    "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.3",
-    "typescript": "^5.2.2"
->>>>>>> a0ced49f9f153a76f0f882d1cbc8bd7658b3593b
   }
 }
